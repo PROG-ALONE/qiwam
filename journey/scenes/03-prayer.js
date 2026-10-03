@@ -14,7 +14,8 @@ export default {
       h('p.j-line.j-reveal', { hidden: true }, 'لكنّ النتوء أخذ يكبر ويكبر...'),
       h('p.j-line.j-reveal', { hidden: true }, 'حتى برز العظم.'),
     ];
-    const hint = h('p.j-hint', 'المس النتوء');
+    const hint = h('p.j-hint.j-hint--call', 'المس النتوء');
+    k.el.classList.add('is-inviting'); // النتوء يومض حتى يكتمل اللمس
     const target = h('button.j-hit', { type: 'button', 'aria-label': 'المس النتوء' }, k.el);
 
     let taps = 0;
@@ -38,6 +39,7 @@ export default {
       k.set({ bump: 1, skin: 0.25, bone: 1 });
       lines.forEach(l => (l.hidden = false));
       hint.hidden = true;
+      k.el.classList.remove('is-inviting');
       done();
     }
     return { finish };

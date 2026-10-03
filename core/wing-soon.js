@@ -17,6 +17,7 @@ export function render(root, { wing }) {
     h('main.wing-soon', { style: { '--c': w.color } },
       h('div.wing-soon-mark', wingIcon(w.id, 56)),
       h('h1', w.name),
+      h('p.wing-soon-desc', w.desc),
       h('p.wing-soon-q', w.question),
       h('p.wing-soon-status', 'هذا الجناح قيد البناء، وسيُفتح هنا حين يكتمل أول درس فيه.'),
       related.length ? h('section.panel',

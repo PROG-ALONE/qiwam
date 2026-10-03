@@ -16,15 +16,19 @@ export default {
     const frame = h('div.j-xray', img, canvas);
     const hint = h('p.j-hint', 'امسح الصورة بإصبعك');
     const showAll = h('button.btn.btn--quiet.j-xray-all', { type: 'button' }, 'اكشف الصورة كاملة');
+    const reading = xrayReading();
+    reading.hidden = true;
 
     stage.append(
       h('div.j-text.j-text--wide',
-        h('p.j-line', 'صوّرتُ الأشعة. الركبتان جنبًا إلى جنب.')),
+        h('p.j-line', 'في 2 آب 2026 بلغ الأمر نهايته: خانتني رجلي، وعجزتُ عن المشي تمامًا.'),
+        h('p.j-line.j-soft', 'وفي اليوم التالي صوّرتُ الأشعة.')),
       h('figure.j-xray-fig', frame,
         h('figcaption',
           h('span', 'أشعة جانبية للركبتين. اليسرى هي المصابة.'),
-          h('span.j-disclaimer', 'التسميات توضيحية، والتشخيص من اختصاص المعالج.'))),
-      h('div.j-row', hint, showAll));
+          h('span.j-disclaimer', 'التسميات توضيحية.'))),
+      h('div.j-row', hint, showAll),
+      reading);
 
     const ctx = canvas.getContext('2d');
     let w = 0, hgt = 0, finished = false, strokes = 0;
@@ -80,9 +84,33 @@ export default {
       finished = true;
       canvas.classList.add('is-gone');
       hint.hidden = true; showAll.hidden = true;
+      reading.hidden = false;
       done();
     }
     showAll.addEventListener('click', finish);
     return { finish };
   },
 };
+
+// قراءة الصورة: ما يظهر، وما يلفت النظر، وما لا تستطيع الأشعة إظهاره.
+// أعدّها Claude من صورة ملتقطة بالهاتف لفيلم الأشعة، فهي قراءة تعليمية لا تقرير أخصائي أشعة.
+function xrayReading() {
+  const block = (title, items, cls = '') => h(`section.j-read-block${cls}`, h('h3', title), h('ul', items.map(i => h('li', i))));
+  return h('article.j-reading', { 'aria-label': 'قراءة صورة الأشعة' },
+    h('h2.j-reading-title', 'ماذا تقول الصورة؟'),
+    block('ما يظهر بوضوح', [
+      'العظام الأربعة في منظر جانبي: عظم الفخذ، والرضفة، والظنبوب، والشظية.',
+      'لا يظهر كسر ولا خلع في أي من الركبتين.',
+    ]),
+    block('ما يلفت النظر عند المقارنة', [
+      'القطب السفلي لرضفة الركبة اليسرى، وهو المكان الذي يبدأ منه الوتر الرضفي، يبدو أطول وأدقّ طرفًا وأقل انتظامًا من نظيره في الركبة اليمنى.',
+      'هذا الشكل يتوافق مع نتوء عظمي في موضع ارتكاز الوتر: العظم يبني نفسه حيث يُشدّ طويلًا. وهو ما يُرى عادة مع التهاب الوتر الرضفي المزمن.',
+    ], '.is-key'),
+    block('ما لا تستطيع الأشعة إظهاره', [
+      'الوتر نفسه: سماكته، والتهابه، وتمزق أليافه. الأشعة السينية ترى العظم، والأوتار تحتاج إلى السونار أو الرنين المغناطيسي.',
+      'العضلات وضمورها، والغضروف بتفاصيله.',
+      'ولهذا كان اعتراضي الأول صحيحًا: صورة تُظهر العظم وحده لا تكفي لتقول «لا شيء فيك».',
+    ]),
+    h('p.j-reading-dx', h('strong', 'التشخيص المعتمد (من المعالج في 10 آب 2026): '), 'التهاب قديم في الوتر الرضفي مع تآكل، وسببه الأساسي انخفاض قدرة التحمّل.'),
+    h('p.j-disclaimer', 'هذه القراءة تعليمية، أعدّها الذكاء الاصطناعي (Claude) من صورة ملتقطة بالهاتف لفيلم الأشعة، ولم يراجعها أخصائي أشعة. لا تُستخدم للتشخيص.'));
+}

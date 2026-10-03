@@ -36,6 +36,7 @@
   --w-rehab: #1b7f7a;
   --w-nutrition: #b77a12;
   --w-story: #7a5634;
+  --w-body: #6b4a8c;
 
   /* الخطوط */
   --font-ui: "Plex Arabic", "Geeza Pro", "Segoe UI", system-ui, sans-serif;
@@ -81,6 +82,7 @@
     --w-rehab: #4fb8b1;
     --w-nutrition: #e0a640;
     --w-story: #c79a6d;
+    --w-body: #a98bd0;
     color-scheme: dark;
   }
 }
@@ -98,5 +100,6 @@
   --w-rehab: #4fb8b1;
   --w-nutrition: #e0a640;
   --w-story: #c79a6d;
+  --w-body: #a98bd0;
   color-scheme: dark;
 }

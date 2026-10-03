@@ -54,6 +54,7 @@
 .wing-soon-mark { display: grid; place-items: center; width: 96px; height: 96px; margin: 0 auto var(--sp-4); border-radius: 50%; color: var(--c); border: 1.5px solid var(--c); }
 .wing-soon h1 { font-size: var(--fs-2xl); color: var(--c); font-family: var(--font-text); }
 .wing-soon-q { font-family: var(--font-text); font-size: var(--fs-lg); line-height: 1.6; }
+.wing-soon-desc { font-size: var(--fs-md); line-height: 1.8; max-width: 52ch; margin-inline: auto; }
 .wing-soon-status { color: var(--text-soft); }
 .wing-soon .panel { text-align: start; margin: var(--sp-6) 0; }
 

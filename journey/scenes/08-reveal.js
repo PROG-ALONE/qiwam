@@ -3,13 +3,12 @@ import { h, s, wait, reducedMotion } from '../../core/ui/dom.js';
 // قلب المدخل. بلا موسيقى ولا دراما. هدوء، ووقفة.
 export default {
   title: 'الكشف',
-  date: 'رمضان 2026',
+  date: 'رمضان 2026: الليلة التاسعة عشرة',
   tone: 'deep',
   questions: [],
   mount(stage, { done, answer }) {
     const lines = [
-      h('p.j-line.j-quiet', 'الليلة التاسعة عشرة.'),
-      h('p.j-line.j-quiet', 'أردتُ أن أصلّي التراويح كاملة.'),
+      h('p.j-line.j-quiet', 'في الليلة التاسعة عشرة انفجر الألم، فخرجتُ من المسجد.'),
     ];
     const reveal = [
       h('p.j-line.j-line--big.j-quiet', 'السجدة.'),

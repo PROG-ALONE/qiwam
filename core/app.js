@@ -2,11 +2,11 @@
 
 import { route, setGuard, start } from './router.js';
 import { applyTheme } from './theme.js';
-import { journeyState } from '../journey/journey.js';
+import { journeyState, SCENES } from '../journey/journey.js';
 
 applyTheme();
 
-const WINGS = ['story', 'anatomy', 'movement', 'rehab', 'football', 'nutrition'];
+const WINGS = ['body', 'story', 'anatomy', 'movement', 'rehab', 'football', 'nutrition'];
 
 route('#/', async () => ({ render() {} }));
 route('#/journey', async () => import('../journey/journey.js'));
@@ -26,7 +26,7 @@ setGuard((path) => {
   if (seg === 'journey' && !path.split('/')[2]) return `#/journey/${st.completed ? 1 : st.reached}`;
   if (seg === 'journey' || seg === 'settings') return null;
   // الجسر بعد ما يوصل الزائر لآخر مشهد
-  if (seg === 'bridge') return st.completed || st.reached >= 10 ? null : `#/journey/${st.reached}`;
+  if (seg === 'bridge') return st.completed || st.reached >= SCENES ? null : `#/journey/${st.reached}`;
   // كل شي ثاني مقفول لحد ما يكمل المدخل
   if (!st.completed) return `#/journey/${st.reached}`;
   if (seg !== 'map' && !WINGS.includes(seg)) return '#/map';

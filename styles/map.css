@@ -5,7 +5,7 @@
   padding: var(--sp-6) var(--sp-5) var(--sp-8);
   display: grid;
   grid-template-columns: minmax(0, 1fr) 340px;
-  grid-template-areas: "hero hero" "stage side";
+  grid-template-areas: "hero hero" "stage side" "sci sci";
   gap: var(--sp-5) var(--sp-6);
 }
 .map-hero { grid-area: hero; display: grid; grid-template-columns: auto 1fr; gap: var(--sp-2) var(--sp-6); align-items: end; }
@@ -31,13 +31,13 @@
 .map-node {
   position: absolute; transform: translate(-50%, -50%);
   display: grid; justify-items: center; gap: var(--sp-1);
-  width: 200px; text-align: center; text-decoration: none; color: var(--text);
+  width: 150px; text-align: center; text-decoration: none; color: var(--text);
   padding: var(--sp-2); border-radius: var(--radius-m);
 }
 .map-node:hover .map-node-dot { transform: scale(1.06); }
 .map-node-dot { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--bg-raised); color: var(--c); border: 2px solid var(--c); transition: transform .2s var(--ease); flex: none; }
 .map-node-text { display: grid; gap: 2px; background: color-mix(in srgb, var(--bg-raised) 92%, transparent); border-radius: var(--radius-s); padding: 2px var(--sp-2); }
-.map-node-name { font-weight: 700; color: var(--c); display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2); font-size: 1.05rem; }
+.map-node-name { font-weight: 700; color: var(--c); background: color-mix(in srgb, var(--bg-raised) 90%, transparent); border-radius: var(--radius-s); padding: 0 var(--sp-2); display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2); font-size: 1.05rem; }
 .map-node-step { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--lamp); color: var(--ink-900); font-size: .72rem; font-weight: 700; }
 .map-node-q { font-family: var(--font-text); font-size: .98rem; line-height: 1.5; }
 .map-node-meta { font-size: .78rem; color: var(--text-soft); }
@@ -52,7 +52,7 @@
 .map-side { grid-area: side; }
 
 @media (max-width: 1080px) {
-  .map { grid-template-columns: 1fr; grid-template-areas: "hero" "stage" "side"; }
+  .map { grid-template-columns: 1fr; grid-template-areas: "hero" "stage" "side" "sci"; }
   .map-side { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
   .map-side .panel { margin: 0; }
 }
@@ -69,3 +69,25 @@
   .map-side { grid-template-columns: 1fr; }
   .site-nav .btn { padding: 0 var(--sp-3); }
 }
+
+/* فهرس العلوم */
+.sci-section { grid-area: sci; margin-top: var(--sp-4); }
+.sci-title { font-family: var(--font-text); font-size: var(--fs-xl); font-weight: 700; margin-bottom: var(--sp-4); }
+.sci-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--sp-4); }
+.sci {
+  display: grid; grid-template-columns: auto 1fr; grid-template-rows: 1fr auto; gap: var(--sp-2) var(--sp-4);
+  height: 100%; padding: var(--sp-5); text-decoration: none; color: var(--text);
+  background: var(--bg-raised); border: 1px solid var(--line); border-top: 4px solid var(--c); border-radius: var(--radius-m);
+  transition: border-color .2s var(--ease);
+}
+.sci:hover { border-color: color-mix(in srgb, var(--c) 50%, var(--line)); border-top-color: var(--c); }
+.sci-mark { grid-row: 1 / 3; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; color: var(--c); border: 1.5px solid var(--c); }
+.sci-body { display: grid; gap: var(--sp-2); align-content: start; }
+.sci-head { display: flex; align-items: baseline; gap: var(--sp-2); flex-wrap: wrap; }
+.sci-name { font-family: var(--font-text); font-size: 1.5rem; color: var(--c); line-height: 1.3; }
+.sci-en { font-size: var(--fs-sm); color: var(--text-soft); }
+.sci-desc { line-height: 1.8; }
+.sci-q { font-family: var(--font-text); color: var(--text-soft); font-size: 1.05rem; }
+.sci-q::before { content: '؟ '; color: var(--lamp-deep); font-weight: 700; }
+.sci-meta { grid-column: 2; font-size: var(--fs-sm); color: var(--text-soft); }
+@media (max-width: 760px) { .sci-list { grid-template-columns: 1fr; } .map-node-name { font-size: .82rem; } }

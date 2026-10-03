@@ -5,19 +5,21 @@ import * as store from '../core/store.js';
 import { go } from '../core/router.js';
 import questions from '../content/journey/questions.js';
 
-export const SCENES = 10;
+export const SCENES = 12;
 
 const loaders = {
   1: () => import('./scenes/01-opening.js'),
   2: () => import('./scenes/02-strength.js'),
   3: () => import('./scenes/03-prayer.js'),
-  4: () => import('./scenes/04-doors.js'),
+  4: () => import('./scenes/04-doctors.js'),
   5: () => import('./scenes/05-withdrawal.js'),
   6: () => import('./scenes/06-ninety.js'),
-  7: () => import('./scenes/07-reveal.js'),
-  8: () => import('./scenes/08-xray.js'),
-  9: () => import('./scenes/09-road.js'),
-  10: () => import('./scenes/10-gather.js'),
+  7: () => import('./scenes/07-ramadan.js'),
+  8: () => import('./scenes/08-reveal.js'),
+  9: () => import('./scenes/09-physio.js'),
+  10: () => import('./scenes/10-xray.js'),
+  11: () => import('./scenes/11-road.js'),
+  12: () => import('./scenes/12-gather.js'),
 };
 
 export function journeyState() {
