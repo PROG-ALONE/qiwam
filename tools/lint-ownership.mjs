@@ -7,7 +7,7 @@ const entities = await imp('content/entities.js');
 const R = reporter('فحص الملكية');
 
 for (const { file, lesson } of await allLessons()) {
-  for (const s of lesson.sections) {
+  for (const s of lesson.steps) {
     for (const id of [...ents(s.html), ...refcards(s.html), ...(s.about || [])]) if (!entities[id]) R.error(`${file} [${s.id}]: كيان غير مسجّل ${id}`);
     for (const id of s.about || []) if (entities[id] && entities[id].owner !== lesson.wing) R.warn(`${file} [${s.id}]: القسم يشرح «${id}» ومالكه جناح ${entities[id].owner}. اكتفِ بجملة وبطاقة إحالة.`);
     // كل فقرة أو عنصر قائمة يذكر كيانًا غير مملوك ويطول أكثر من الحد

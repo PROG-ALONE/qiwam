@@ -15,7 +15,7 @@ const LEVELS = [
 ];
 
 export default {
-  mount(el) {
+  mount(el, { start = 0, compact = false } = {}) {
     const art = s('svg', { viewBox: '0 0 100 100', class: 'lz-art', 'aria-hidden': 'true' });
     const name = h('h4.lz-name');
     const def = h('p.lz-def');
@@ -43,8 +43,9 @@ export default {
       duration: 12000, label: 'رحلة من الذرة إلى الإنسان',
       onFrame: (t) => show(Math.min(LEVELS.length - 1, Math.floor(t * LEVELS.length))),
     });
-    show(0);
-    el.append(h('div.lz', steps, h('div.lz-stage', art, h('div.lz-text', name, def)), player.el));
+    show(start);
+    player.seek(start / (LEVELS.length - 1));
+    el.append(h('div.lz', { class: compact ? 'is-compact' : '' }, steps, h('div.lz-stage', art, h('div.lz-text', name, def)), compact ? null : player.el));
     return { show, player };
   },
 };

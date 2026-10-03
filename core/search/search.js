@@ -21,7 +21,7 @@ async function buildIndex() {
       let text = `${l.course.title} ${l.level.title}`;
       if (l.status === 'open') {
         const L = await loadLesson(l.id);
-        text += ' ' + [L.titleEn, ...L.objectives, ...L.summary, ...L.sections.map(s => s.html.replace(/<[^>]+>/g, ' '))].join(' ');
+        text += ' ' + [L.titleEn, ...L.objectives, ...L.summary, ...L.steps.map(s => `${s.title} ${s.html.replace(/<[^>]+>/g, ' ')}`)].join(' ');
       }
       docs.push({ wing: w.id, kind: l.status === 'open' ? 'درس' : 'درس قادم', title: l.title, text, href: l.status === 'open' ? lessonHref(l.id) : `#/${w.id}` });
     }

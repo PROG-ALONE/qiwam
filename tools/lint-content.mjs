@@ -17,22 +17,28 @@ const checkCite = (where, c) => {
   if (REFS[id].verified?.status !== 'ok') R.error(`${where}: المرجع ${id} غير متحقق منه`);
 };
 
+const STEP_WORDS = 90; // الخطوة فكرة واحدة: نص قصير
 for (const { file, lesson: L } of await allLessons()) {
-  for (const k of ['id', 'wing', 'title', 'minutes', 'objectives', 'sections', 'summary']) if (L[k] == null) R.error(`${file}: الحقل ${k} مفقود`);
+  for (const k of ['id', 'wing', 'title', 'minutes', 'objectives', 'steps', 'summary']) if (L[k] == null) R.error(`${file}: الحقل ${k} مفقود`);
   if (L.objectives.length < 3 || L.objectives.length > 5) R.warn(`${file}: الأهداف ${L.objectives.length} (المطلوب 3–5)`);
-  if (!L.sections.some(s => s.type === 'science')) R.error(`${file}: لا يوجد شرح علمي`);
-  if (!L.sections.some(s => s.type === 'practical')) R.error(`${file}: لا يوجد شرح عملي`);
-  if (!L.sections.some(s => s.type === 'case' || s.type === 'futsal')) R.error(`${file}: لا يوجد تطبيق`);
-  if (!(L.visuals || []).length) R.error(`${file}: لا يوجد رسم تفاعلي`);
-  for (const v of L.visuals || []) if (!existsSync(path.join(ROOT, 'core/viz/visuals', `${v.id}.js`))) R.error(`${file}: الرسم ${v.id} غير موجود`);
-  for (const g of L.glossary || []) if (!glossary.find(x => x.id === g)) R.error(`${file}: مصطلح غير موجود في المسرد ${g}`);
-  for (const s of L.sections) {
+  const kinds = new Set(L.steps.map(s => s.kind));
+  if (!kinds.has('science')) R.error(`${file}: لا توجد خطوة علمية (kind: 'science')`);
+  if (!kinds.has('practical')) R.error(`${file}: لا توجد خطوة عملية`);
+  if (!kinds.has('case') && !kinds.has('futsal')) R.error(`${file}: لا توجد خطوة تطبيق`);
+  const stepIds = new Set();
+  for (const s of L.steps) {
+    const w = `${file} [${s.id}]`;
+    if (stepIds.has(s.id)) R.error(`${w}: معرّف خطوة مكرر`); stepIds.add(s.id);
+    if (!s.visual) R.warn(`${w}: خطوة بلا رسم تفاعلي`);
+    else if (!existsSync(path.join(ROOT, 'core/viz/visuals', `${s.visual.id}.js`))) R.error(`${w}: الرسم ${s.visual.id} غير موجود`);
+    const n = s.html.replace(/<ref-card[^>]*><\/ref-card>/g, '').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+    if (n > STEP_WORDS) R.warn(`${w}: ${n} كلمة. الخطوة فكرة واحدة؛ اختصر إلى ${STEP_WORDS} أو قسّمها.`);
     const cs = cites(s.html);
-    if (s.type === 'science' && !cs.length) R.error(`${file} [${s.id}]: شرح علمي بلا مراجع`);
-    cs.forEach(c => checkCite(`${file} [${s.id}]`, c));
-    // كل فقرة علمية تنتهي بمرجع
-    if (s.type === 'science') for (const p of s.html.split('</p>')) if (/<p[ >]/.test(p) && !/<cite /.test(p) && p.replace(/<[^>]+>/g, '').trim().length > 40 && !/<h3/.test(p)) R.warn(`${file} [${s.id}]: فقرة علمية بلا مرجع: «${p.replace(/<[^>]+>/g, '').trim().slice(0, 50)}…»`);
+    if (s.kind === 'science' && !cs.length) R.error(`${w}: خطوة علمية بلا مراجع`);
+    cs.forEach(c => checkCite(w, c));
+    if (s.check && (!s.check.options?.some(o => o.id === s.check.correct) || !s.check.explain)) R.error(`${w}: الفحص السريع ناقص (الجواب أو الشرح)`);
   }
+  for (const g of L.glossary || []) if (!glossary.find(x => x.id === g)) R.error(`${file}: مصطلح غير موجود في المسرد ${g}`);
   (L.flashcards || []).forEach((f, i) => f.ref && checkCite(`${file} بطاقة ${i + 1}`, f.ref));
 
   const Q = await questionsFor(L.quiz || L.id);

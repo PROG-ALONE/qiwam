@@ -1,101 +1,95 @@
-# يختبر محركات المرحلة A2: الجناح، والدرس، والإحالة والرجوع، واللوحة الجانبية، والبحث، والمسرد، والمكتبة، والاختبار بأنواعه.
-import sys, asyncio, json
+# يختبر الدرس بالخطوات: المحتويات، والخطوات ورسومها التفاعلية، والفحص السريع، والإحالة والرجوع إلى الخطوة نفسها،
+# ولوحة المرجع، والاختبار بأنواعه العشرة، والبطاقات، والبحث، والمسرد، والمكتبة.
+import sys, asyncio
 from playwright.async_api import async_playwright
 BASE = sys.argv[1] if len(sys.argv) > 1 else 'http://localhost:8765/'
 OUT = sys.argv[2] if len(sys.argv) > 2 else '/tmp/shots'
 SEED = "localStorage.setItem('qiwam.journey.completed', JSON.stringify({v:true,updatedAt:1})); localStorage.setItem('qiwam.journey.reached', JSON.stringify({v:12,updatedAt:1}));"
 
-async def answer(pg, qtype):
+async def interact(pg, key):
+    v = pg.locator('.lsn-visual')
+    if key == 'atoms':
+        for i in range(2): await v.locator('.mol-h').nth(i).dispatch_event('click')
+    elif key == 'cell':
+        for p in ['membrane', 'cytoplasm', 'organelle']: await v.locator(f'[data-part="{p}"]').first.dispatch_event('click')
+    elif key == 'tissue':
+        await v.locator('input[type=range]').fill('20')
+    elif key == 'four':
+        for i in range(4): await v.locator('.ft-card').nth(i).click()
+    elif key == 'organ':
+        await v.locator('[data-e="organ.liver"]').dispatch_event('click')
+    elif key == 'count':
+        await v.locator('.cc-tabs button').nth(1).click()
+    elif key == 'touch':
+        await v.locator('.pp-dot').dispatch_event('click')
+    elif key == 'story':
+        await v.locator('.cc-tabs button').nth(1).click()
+    if await pg.locator('.qc-opt').count():
+        await pg.locator('.qc-opt').first.click()
+
+async def answer(pg, t):
     q = pg.locator('.qz-q')
-    if qtype in ('mcq', 'case', 'image'):
-        await q.locator('.qz-opt').first.click()
-    elif qtype == 'multi':
-        await q.locator('.qz-opt').nth(0).click(); await q.locator('.qz-opt').nth(1).click()
-    elif qtype == 'hotspot':
-        await q.locator('[data-e="organ.heart"]').click()
-    elif qtype == 'name-it':
-        await q.locator('input').fill('الكبد')
-    elif qtype == 'drag-label':
+    if t in ('mcq', 'case', 'image'): await q.locator('.qz-opt').first.click()
+    elif t == 'multi': await q.locator('.qz-opt').nth(0).click(); await q.locator('.qz-opt').nth(1).click()
+    elif t == 'hotspot': await q.locator('[data-e="organ.heart"]').click()
+    elif t == 'name-it': await q.locator('input').fill('الكبد')
+    elif t == 'drag-label':
         for e in ['organ.lungs', 'organ.stomach', 'organ.kidneys']:
-            await q.locator(f'.qz-chip[data-e="{e}"]').click()
-            await q.locator(f'path[data-e="{e}"]').first.dispatch_event('click')
-    elif qtype == 'match':
-        pairs = {'cell': 'خلية دم حمراء واحدة', 'tissue': 'النسيج الضام الكثيف المنتظم في الوتر', 'organ': 'المعدة', 'system': 'الجهاز الهضمي'}
-        for l, r in pairs.items():
-            await q.locator(f'.qz-m[data-side="l"][data-id="{l}"]').click()
-            await q.locator('.qz-m[data-side="r"]', has_text=r).click()
-    elif qtype == 'order':
-        pass  # يكتفي بالترتيب الحالي (قد يكون خطأ)، المهم أن المحرك يعمل
-    elif qtype == 'tf-why':
-        await q.locator('.qz-tf .qz-opt[data-id="false"]').click()
-        await q.locator('.qz-options .qz-opt[data-id="r2"]').click()
-    elif qtype == 'calc':
-        await q.locator('input').fill('83')
+            await q.locator(f'.qz-chip[data-e="{e}"]').click(); await q.locator(f'path[data-e="{e}"]').first.dispatch_event('click')
+    elif t == 'match':
+        for l, r in {'cell': 'خلية دم حمراء واحدة', 'tissue': 'النسيج الضام الكثيف المنتظم في الوتر', 'organ': 'المعدة', 'system': 'الجهاز الهضمي'}.items():
+            await q.locator(f'.qz-m[data-side="l"][data-id="{l}"]').click(); await q.locator('.qz-m[data-side="r"]', has_text=r).click()
+    elif t == 'tf-why':
+        await q.locator('.qz-tf .qz-opt[data-id="false"]').click(); await q.locator('.qz-options .qz-opt[data-id="r2"]').click()
+    elif t == 'calc': await q.locator('input').fill('83')
 
 async def run(name, opts):
     errs = []
     async with async_playwright() as p:
         b = await p.chromium.launch()
-        ctx = await b.new_context(**opts, locale='ar')
-        pg = await ctx.new_page()
+        pg = await (await b.new_context(**opts, locale='ar')).new_page()
         pg.on('console', lambda m: m.type == 'error' and errs.append(m.text))
         pg.on('pageerror', lambda e: errs.append(str(e)))
         await pg.goto(BASE); await pg.evaluate(SEED)
         await pg.goto(BASE + '#/body'); await pg.wait_for_selector('.wh-lesson')
-        await pg.screenshot(path=f'{OUT}/{name}-wing.png', full_page=True)
-        await pg.click('.wh-lesson'); await pg.wait_for_selector('.ls-article .ls-block#refs')
-        await pg.wait_for_selector('.lz-step'); await pg.wait_for_selector('.organ-map')
-        await pg.screenshot(path=f'{OUT}/{name}-lesson.png', full_page=True)
-        # المرجع
-        await pg.locator('.cite').first.click(); await pg.wait_for_selector('.ref-panel.is-open')
-        await pg.screenshot(path=f'{OUT}/{name}-refpanel.png')
-        await pg.click('.rp-close')
-        # الإحالة والرجوع
-        await pg.locator('.refcard-go').first.scroll_into_view_if_needed()
-        y0 = await pg.evaluate('scrollY')
-        await pg.locator('.refcard-go').first.click(); await pg.wait_for_selector('.entity-page')
-        await pg.screenshot(path=f'{OUT}/{name}-entity.png', full_page=True)
-        await pg.click('.back-btn'); await pg.wait_for_selector('.ls-article'); await pg.wait_for_timeout(500)
-        y1 = await pg.evaluate('scrollY')
-        print(name, 'scroll restore', y0, y1)
-        # الاختبار
-        await pg.locator('#quiz button.btn--primary').click()
+        await pg.click('.wh-lesson'); await pg.wait_for_selector('.lsn-toc')
+        await pg.screenshot(path=f'{OUT}/{name}-00-overview.png', full_page=True)
+        await pg.click('.lsn-go')
+        keys = []
+        for i in range(20):
+            await pg.wait_for_selector('.lsn-step'); await pg.wait_for_timeout(250)
+            url = pg.url; key = url.split('?s=')[-1] if '?s=' in url else '?'
+            keys.append(key)
+            if key == 'quiz': break
+            await interact(pg, key); await pg.wait_for_timeout(350)
+            await pg.screenshot(path=f'{OUT}/{name}-{i+1:02d}-{key}.png', full_page=True)
+            if key == 'touch':
+                await pg.locator('.refcard-go').click(); await pg.wait_for_selector('.entity-page')
+                await pg.click('.back-btn'); await pg.wait_for_selector('.lsn-step'); await pg.wait_for_timeout(300)
+                assert '?s=touch' in pg.url, 'back did not return to step: ' + pg.url
+            if key == 'ladder':
+                await pg.locator('.lsn-text .cite').first.click(); await pg.wait_for_selector('.ref-panel.is-open'); await pg.click('.rp-close')
+            await pg.locator('.lsn-nav .btn--primary').click()
+        await pg.locator('.ls-quiz .btn--primary').click()
         types = []
         for i in range(11):
-            await pg.wait_for_selector('.qz-q'); await pg.wait_for_timeout(150)
+            await pg.wait_for_selector('.qz-q'); await pg.wait_for_timeout(120)
             t = await pg.locator('.qz-q').get_attribute('data-type'); types.append(t)
-            await answer(pg, t)
-            await pg.wait_for_timeout(120)
-            if t in ('hotspot', 'drag-label', 'name-it') and i < 3:
-                await pg.screenshot(path=f'{OUT}/{name}-q-{t}.png')
-            if await pg.locator('.qz-action').is_disabled():
-                await pg.screenshot(path=f'{OUT}/{name}-STUCK-{t}.png'); print('STUCK on', t, errs); break
-            await pg.click('.qz-action')  # تحقق
-            try: await pg.wait_for_selector('.qz-verdict', timeout=4000)
-            except Exception:
-                await pg.screenshot(path=f'{OUT}/{name}-NOVERDICT-{t}.png'); print('NO VERDICT on', t, errs); raise
-            if t in ('match', 'tf-why'): await pg.screenshot(path=f'{OUT}/{name}-q-{t}.png')
-            await pg.click('.qz-action')  # التالي/النتيجة
-        await pg.wait_for_selector('.qz-result')
-        score = await pg.locator('.qz-score').inner_text()
-        await pg.screenshot(path=f'{OUT}/{name}-result.png')
-        # البطاقات
-        await pg.locator('.fc-card').click(); await pg.locator('.fc-rate button').first.click()
-        # البحث والمسرد والمكتبة
-        await pg.goto(BASE + '#/search?q=الكبد'); await pg.wait_for_selector('.search-group')
-        await pg.screenshot(path=f'{OUT}/{name}-search.png', full_page=True)
-        await pg.goto(BASE + '#/glossary'); await pg.wait_for_selector('.gl-item')
-        await pg.goto(BASE + '#/library'); await pg.wait_for_selector('.lib-item')
-        await pg.screenshot(path=f'{OUT}/{name}-library.png', full_page=True)
-        await pg.goto(BASE + '#/review'); await pg.wait_for_selector('main.page')
-        await pg.goto(BASE + '#/map'); await pg.wait_for_selector('.sci')
+            await answer(pg, t); await pg.wait_for_timeout(100)
+            await pg.click('.qz-action'); await pg.wait_for_selector('.qz-verdict', timeout=5000)
+            await pg.click('.qz-action')
+        await pg.wait_for_selector('.qz-result'); score = await pg.locator('.qz-score').inner_text()
+        await pg.locator('.lsn-nav .btn--primary').click(); await pg.wait_for_selector('.ls-refs')
+        await pg.screenshot(path=f'{OUT}/{name}-refs.png', full_page=True)
+        await pg.locator('.lsn-nav .btn--primary').click(); await pg.wait_for_selector('.lsn-toc')
+        for path, sel in [('#/search?q=الكبد', '.search-group'), ('#/glossary', '.gl-item'), ('#/library', '.lib-item'), ('#/review', 'main.page'), ('#/map', '.sci')]:
+            await pg.goto(BASE + path); await pg.wait_for_selector(sel)
         await b.close()
-    print(name, 'types:', sorted(set(types)), 'score:', score, 'errors:', errs or 'none')
+    print(name, 'steps:', keys, '| types:', len(set(types)), '| score:', score, '| errors:', errs or 'none')
 
 DEV = {'ipad': dict(viewport={'width': 820, 'height': 1180}, is_mobile=True, has_touch=True),
        'phone': dict(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True),
        'laptop': dict(viewport={'width': 1366, 'height': 860})}
 async def main():
-    for n in (sys.argv[3].split(',') if len(sys.argv) > 3 else DEV):
-        await run(n, DEV[n])
+    for n in (sys.argv[3].split(',') if len(sys.argv) > 3 else DEV): await run(n, DEV[n])
 asyncio.run(main())

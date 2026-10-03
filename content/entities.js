@@ -3,8 +3,8 @@
 
 const E = {
   // ——— الجسم من الداخل ———
-  'concept.levels_of_organization': { owner: 'body', home: 'body.l1.c1.levels#theory', ar: 'مستويات التنظيم', en: 'Levels of organization', hook: 'من الذرة إلى الإنسان: كيف يُبنى جسمك طبقة فوق طبقة؟', refs: ['ref.openstax-ap2e:1.2'] },
-  'cell.human':        { owner: 'body', home: 'body.l1.c1.levels#theory', ar: 'الخلية', en: 'Cell', la: 'Cellula', hook: 'أصغر وحدة حية تعمل بنفسها.', refs: ['ref.openstax-ap2e:1.2'] },
+  'concept.levels_of_organization': { owner: 'body', home: 'body.l1.c1.levels#ladder', ar: 'مستويات التنظيم', en: 'Levels of organization', hook: 'من الذرة إلى الإنسان: كيف يُبنى جسمك طبقة فوق طبقة؟', refs: ['ref.openstax-ap2e:1.2'] },
+  'cell.human':        { owner: 'body', home: 'body.l1.c1.levels#cell', ar: 'الخلية', en: 'Cell', la: 'Cellula', hook: 'أصغر وحدة حية تعمل بنفسها.', refs: ['ref.openstax-ap2e:1.2'] },
   'cell.organelle':    { owner: 'body', home: null, ar: 'العضيّة', en: 'Organelle', hook: 'مصانع صغيرة داخل كل خلية.', refs: ['ref.openstax-ap2e:1.2'] },
   'tissue.epithelial': { owner: 'body', home: null, ar: 'النسيج الطلائي', en: 'Epithelial tissue', la: 'Textus epithelialis', hook: 'الغطاء والبطانة: من الجلد إلى بطانة الأمعاء.', refs: ['ref.openstax-ap2e:4.1'] },
   'tissue.connective': { owner: 'body', home: null, ar: 'النسيج الضام', en: 'Connective tissue', la: 'Textus connectivus', hook: 'النسيج الذي يربط ويدعم: ومنه الأوتار والعظم والدم.', refs: ['ref.openstax-ap2e:4.1'] },
