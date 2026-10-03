@@ -1,0 +1,180 @@
+/* المدخل "السجدة": ليل أزرق داكن، وضوء مصباح دافئ وحيد. */
+
+body[data-route="journey"] { background: #0d151e; }
+
+.journey {
+  --j-bg: #0d151e;
+  --j-text: #dfe5ea;
+  --j-soft: #8797a7;
+  --tendon: #d9cbb0;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto auto;
+  background: radial-gradient(120% 80% at 50% 0%, #15222f 0%, var(--j-bg) 60%);
+  color: var(--j-text);
+  padding: env(safe-area-inset-top) var(--sp-4) env(safe-area-inset-bottom);
+  overflow: hidden;
+}
+.journey[data-tone="deep"] { background: #080d13; }
+
+.j-top { display: flex; align-items: center; gap: var(--sp-4); padding: var(--sp-3) 0; }
+.j-brand { font-family: var(--font-text); font-size: 1.4rem; font-weight: 700; color: var(--lamp); text-decoration: none; }
+.j-progress { flex: 1; display: flex; gap: 6px; list-style: none; margin: 0; padding: 0; max-width: 420px; margin-inline: auto; }
+.j-progress li { flex: 1; height: 3px; border-radius: 2px; background: #2a3a4a; }
+.j-progress li.is-past { background: #6b7c8d; }
+.j-progress li.is-now { background: var(--lamp); }
+.j-skip { color: var(--j-soft); font-size: var(--fs-sm); padding: 0 var(--sp-3); }
+
+.j-date { text-align: center; color: var(--lamp); font-size: var(--fs-sm); letter-spacing: .02em; min-height: 1.5em; }
+
+.j-stage { position: relative; display: flex; flex-direction: column; justify-content: center; gap: var(--sp-5); padding: var(--sp-4) 0; max-width: 1080px; width: 100%; margin: 0 auto; }
+
+.j-line { font-family: var(--font-text); font-size: clamp(1.25rem, 2.6vw, 1.6rem); line-height: 1.9; margin: 0 0 var(--sp-3); }
+.j-line--big { font-size: clamp(1.6rem, 4.4vw, 2.6rem); line-height: 1.7; font-weight: 700; }
+.j-soft { color: var(--j-soft); }
+.j-hint { color: var(--j-soft); font-size: var(--fs-sm); margin: var(--sp-2) 0 0; animation: j-breathe 2.4s ease-in-out infinite; }
+@keyframes j-breathe { 50% { opacity: .45; } }
+.j-reveal:not([hidden]) { animation: j-fade 1.2s var(--ease) both; }
+@keyframes j-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.j-center { max-width: 34ch; margin: 0 auto; text-align: center; position: relative; z-index: 2; pointer-events: none; }
+.j-center--low { margin-top: var(--sp-4); }
+.j-center--bottom { position: absolute; inset-inline: 0; bottom: var(--sp-2); }
+.j-tapzone { position: absolute; inset: 0; background: transparent; border: 0; cursor: pointer; z-index: 1; }
+.j-tapzone:focus-visible { outline-offset: -6px; }
+
+.j-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--sp-6); align-items: center; }
+.j-text { max-width: 30ch; }
+.j-text--wide { max-width: 40ch; margin: 0 auto; text-align: center; }
+.j-figure { margin: 0; display: grid; justify-items: center; gap: var(--sp-3); }
+.j-figure svg { width: min(100%, 300px); height: auto; max-height: 52dvh; }
+.j-control { display: flex; align-items: center; gap: var(--sp-3); width: min(100%, 320px); }
+.j-control--time { flex-direction: column; width: min(100%, 640px); margin: 0 auto; }
+.j-range-label { color: var(--j-soft); font-size: var(--fs-sm); white-space: nowrap; }
+.j-readout { color: var(--j-soft); font-size: var(--fs-sm); white-space: nowrap; }
+.j-row { display: flex; justify-content: center; align-items: center; gap: var(--sp-4); flex-wrap: wrap; }
+
+/* شريط سحب بشكل هادئ */
+.j-range { -webkit-appearance: none; appearance: none; flex: 1; width: 100%; height: var(--touch); background: transparent; cursor: pointer; direction: ltr; }
+.j-range::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: #2f4152; }
+.j-range::-moz-range-track { height: 4px; border-radius: 2px; background: #2f4152; }
+.j-range::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; margin-top: -12px; border-radius: 50%; background: var(--lamp); border: 4px solid #0d151e; box-shadow: 0 0 0 1px var(--lamp); }
+.j-range::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: var(--lamp); border: 4px solid #0d151e; }
+.j-range--mini { max-width: 220px; }
+.j-ticks { display: flex; justify-content: space-between; width: 100%; font-size: .78rem; color: var(--j-soft); direction: ltr; }
+.j-ticks span { direction: rtl; text-align: center; flex: 1; }
+
+/* الركبة */
+.knee { overflow: visible; }
+.knee .k-skin { fill: #22323f; stroke: #34475a; stroke-width: 1.5; opacity: var(--skin-op, 1); transition: opacity .6s; }
+.knee .k-bone { fill: #cfd7de; stroke: #7f91a2; stroke-width: 1.5; stroke-linejoin: round; }
+.knee .k-bone--soft { fill: #a7b4c0; }
+.knee .k-patella { fill: #e3e8ec; }
+.knee .k-tendon { fill: none; stroke: var(--tendon); stroke-width: 9; stroke-linecap: round; }
+.knee .k-stress-line { stroke: var(--signal); stroke-width: 2; stroke-linecap: round; fill: none; opacity: .8; }
+.knee .k-heat { transition: r .3s; }
+.knee .k-bump { fill: #22323f; stroke: var(--lamp); stroke-width: 2; }
+.knee .k-spur { fill: #f3dcb0; stroke: var(--lamp); stroke-width: 2; stroke-linejoin: round; }
+.knee.is-draggable { cursor: grab; touch-action: none; }
+.knee.is-shaking { animation: j-shake .38s linear; }
+@keyframes j-shake { 20% { transform: translateX(-6px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(2px); } }
+.j-hit { background: none; border: 0; padding: 0; cursor: pointer; border-radius: var(--radius-m); }
+.j-angle { font-size: var(--fs-lg); font-weight: 600; color: var(--lamp); min-width: 3.5ch; text-align: center; }
+
+/* الأبواب */
+.j-doors { display: grid; grid-template-columns: repeat(3, minmax(0, 160px)); justify-content: center; gap: var(--sp-5); }
+.j-door-wrap { display: grid; gap: var(--sp-3); justify-items: center; text-align: center; }
+.j-door { overflow: hidden; width: 100%; aspect-ratio: 1 / 1.9; border: 2px solid #3a4c5e; border-radius: 6px 6px 0 0; background: #0a1118; padding: 0; perspective: 600px; cursor: pointer; position: relative; box-shadow: inset 0 0 40px #e9b87222; }
+.j-door-leaf { position: absolute; inset: 0; background: linear-gradient(#22303e, #1b2734); border-radius: 4px 4px 0 0; transform-origin: right center; transition: transform 1s var(--ease); display: block; }
+.j-door-knob { position: absolute; left: 12%; top: 52%; width: 9px; height: 9px; border-radius: 50%; background: var(--lamp); }
+.j-door.is-open .j-door-leaf { transform: rotateY(-72deg); }
+.j-door-reply { font-family: var(--font-text); font-size: 1.35rem; margin: 0; animation: j-fade .9s both; }
+.j-door-after { display: block; font-size: 1rem; color: var(--j-soft); margin-top: var(--sp-2); }
+
+/* الانسحاب */
+.j-withdraw { display: grid; grid-template-columns: 1.3fr 1fr auto; gap: var(--sp-6); align-items: center; max-width: 900px; margin: 0 auto; width: 100%; }
+.j-timebox { min-height: 7.5em; }
+.j-when { color: var(--lamp); font-weight: 600; margin: 0 0 var(--sp-2); }
+.j-items { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); }
+.j-item { display: flex; align-items: center; gap: var(--sp-3); transition: opacity .8s, transform .8s var(--ease), filter .8s; }
+.j-item-icon { color: var(--lamp); display: grid; place-items: center; width: 44px; }
+.j-item-icon svg { fill: currentColor; }
+.j-item.is-gone { opacity: .18; transform: translateY(14px); filter: grayscale(1); text-decoration: line-through; }
+.j-scale { display: grid; justify-items: center; padding: var(--sp-4) var(--sp-5); border: 1px solid #2f4152; border-radius: var(--radius-m); min-width: 110px; }
+.j-scale-label, .j-scale-unit { font-size: var(--fs-sm); color: var(--j-soft); }
+.j-scale-num { font-size: 2.6rem; font-weight: 700; line-height: 1.1; transition: color .6s; }
+.j-scale.is-up .j-scale-num { color: var(--lamp); }
+
+/* الكشف */
+.j-reveal-wrap { display: grid; justify-items: center; gap: var(--sp-4); }
+.j-mihrab { width: min(70vw, 300px); height: auto; }
+.j-arch { fill: none; stroke: #2c3c4d; stroke-width: 1.5; }
+.j-arch--inner { stroke: #1f2c39; }
+.j-floor { stroke: #2c3c4d; }
+.j-chair { fill: none; stroke: #6c7d8d; stroke-width: 3; stroke-linecap: round; }
+.j-person { fill: none; stroke: #c4ccd3; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+.j-person:is(circle) { fill: #c4ccd3; stroke: none; }
+.j-lampdot { fill: var(--lamp); filter: drop-shadow(0 0 8px var(--lamp)); }
+.j-quiet:not([hidden]) { animation: j-fade 2.4s ease both; }
+
+/* الأشعة */
+.j-xray-fig { margin: 0 auto; width: min(100%, 860px); }
+.j-xray { position: relative; border-radius: var(--radius-m); overflow: hidden; line-height: 0; }
+.j-xray-img { width: 100%; height: auto; }
+.j-xray-cover { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: crosshair; transition: opacity 1s; }
+.j-xray { border: 1px solid #2f4152; }
+.j-xray-cover.is-gone { opacity: 0; pointer-events: none; }
+.j-xray-fig figcaption { display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--sp-2); font-size: var(--fs-sm); color: var(--j-soft); padding-top: var(--sp-2); }
+.j-disclaimer { color: var(--lamp); }
+
+/* الطريق */
+.j-road-fig { margin: 0 auto; width: min(100%, 720px); }
+.j-road { width: 100%; height: auto; overflow: visible; }
+.j-road-track { fill: none; stroke: #2a3a4a; stroke-width: 3; stroke-dasharray: 2 8; stroke-linecap: round; }
+.j-road-walked { fill: none; stroke: var(--lamp); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.j-road-future { fill: none; stroke: #2a3a4a; stroke-width: 2; stroke-dasharray: 2 10; stroke-linecap: round; opacity: .6; }
+.j-road-dot { fill: #0d151e; stroke: #3a4c5e; stroke-width: 2; transition: fill .4s, stroke .4s; }
+.j-road-dot.is-on { fill: var(--lamp); stroke: var(--lamp); }
+.j-road-dot.is-now.is-on { filter: drop-shadow(0 0 10px var(--lamp)); animation: j-breathe 2.4s ease-in-out infinite; }
+.j-road-text { min-height: 6.5em; }
+
+/* التجميع */
+.j-gather { position: relative; height: min(62dvh, 560px); }
+.j-chip { position: absolute; left: var(--x); top: var(--y); transform: translate(-50%, -50%); max-width: 22ch; text-align: center; font-family: var(--font-text); font-size: 1.05rem; line-height: 1.6; color: var(--j-text); padding: var(--sp-2) var(--sp-3); border: 1px solid #3a4c5e; border-radius: var(--radius-m); background: #0d151ecc; }
+.j-gather-fig { position: absolute; inset: 0; margin: auto; height: 100%; width: auto; opacity: .12; transition: opacity 1.4s; }
+.j-gather.is-gathered .j-gather-fig { opacity: 1; }
+.j-final { color: var(--lamp); }
+
+/* الأسئلة المعلقة */
+.j-questions { display: grid; gap: var(--sp-2); justify-items: center; padding: var(--sp-2) 0; min-height: 2.5em; }
+.j-q { display: inline-flex; align-items: center; gap: var(--sp-3); margin: 0; padding: var(--sp-2) var(--sp-4); border: 1px solid #e9b87255; border-radius: 999px; color: var(--lamp); font-size: var(--fs-sm); animation: j-fade 1s both; }
+.j-q-mark { font-family: var(--font-text); font-weight: 700; font-size: 1.1rem; }
+
+.j-nav { display: flex; justify-content: space-between; padding: var(--sp-3) 0 var(--sp-4); max-width: 1080px; width: 100%; margin: 0 auto; }
+.journey .btn { background: transparent; color: var(--j-text); border-color: #34475a; }
+.journey .btn--primary { background: var(--lamp); color: #0d151e; border-color: var(--lamp); }
+.journey .btn--quiet { border-color: transparent; color: var(--j-soft); }
+.journey .btn[disabled] { opacity: .25; }
+
+/* هيكل الجسم (مشترك مع الخريطة) */
+.fig-bone { fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.fig-rib { stroke-width: 2; opacity: .7; }
+.fig-joint { fill: var(--j-bg, var(--bg)); stroke: currentColor; stroke-width: 2; }
+.fig-knee { fill: var(--lamp); }
+.fig-knee-glow { fill: var(--lamp); opacity: .25; }
+.j-gather-fig { color: #9fb0bf; }
+
+@media (max-width: 760px) {
+  .j-split { grid-template-columns: 1fr; gap: var(--sp-4); text-align: center; }
+  .j-text { max-width: none; }
+  .j-figure svg { max-height: 30dvh; }
+  .j-stage { gap: var(--sp-3); padding: var(--sp-2) 0; }
+  .j-line { font-size: 1.15rem; line-height: 1.8; margin-bottom: var(--sp-2); }
+  .j-withdraw { grid-template-columns: 1fr; gap: var(--sp-4); text-align: center; }
+  .j-items { justify-items: center; }
+  .j-scale { justify-self: center; }
+  .j-doors { gap: var(--sp-3); }
+  .j-door-reply { font-size: 1.1rem; }
+  .j-ticks { font-size: .68rem; }
+  .j-chip { font-size: .85rem; max-width: 16ch; }
+}

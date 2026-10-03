@@ -1,0 +1,70 @@
+/* الهيكل العام: الرأس، والصفحات، والألواح */
+
+.site-header {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; gap: var(--sp-4);
+  padding: calc(var(--sp-2) + env(safe-area-inset-top)) var(--sp-5) var(--sp-2);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.brand { display: inline-flex; align-items: center; gap: var(--sp-2); text-decoration: none; min-height: var(--touch); }
+.brand-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--ink-900); color: var(--lamp); }
+:root[data-theme="dark"] .brand-mark { background: var(--lamp); color: var(--ink-900); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .brand-mark { background: var(--lamp); color: var(--ink-900); } }
+.brand-name { font-family: var(--font-text); font-size: 1.6rem; font-weight: 700; line-height: 1; }
+.brand-wing { display: inline-flex; align-items: center; gap: var(--sp-2); color: var(--c); font-weight: 600; padding-inline-start: var(--sp-4); border-inline-start: 1px solid var(--line); }
+.site-nav { margin-inline-start: auto; display: flex; gap: var(--sp-1); }
+
+.wing-icon { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+
+.page { max-width: 720px; margin: 0 auto; padding: var(--sp-6) var(--sp-4) var(--sp-8); }
+.page h1 { font-size: var(--fs-xl); margin-bottom: var(--sp-5); }
+
+.panel {
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  padding: var(--sp-5);
+  margin-bottom: var(--sp-4);
+}
+.panel h2 { font-size: var(--fs-md); margin-bottom: var(--sp-3); }
+.panel-foot { margin: var(--sp-4) 0 0; font-size: var(--fs-sm); }
+.panel-foot a { color: var(--text-soft); }
+.empty { color: var(--text-soft); margin: 0; }
+
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; gap: 2px; }
+.seg-btn { min-height: 40px; padding: 0 var(--sp-4); border: 0; border-radius: 999px; background: transparent; cursor: pointer; color: var(--text-soft); }
+.seg-btn[aria-checked="true"] { background: var(--text); color: var(--bg); }
+.is-danger { border-color: var(--signal) !important; color: var(--signal) !important; }
+
+/* الأسئلة المفتوحة */
+.qlist { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); }
+.qitem { display: grid; grid-template-columns: 28px 1fr; gap: var(--sp-3); align-items: start; }
+.qitem-mark { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--lamp-deep); color: var(--lamp-deep); font-weight: 700; font-size: .95rem; margin-top: 2px; }
+.qitem.is-solved .qitem-mark { background: var(--lamp-deep); color: var(--bg-raised); }
+.qitem-body { display: grid; gap: 2px; }
+.qitem-text { font-weight: 500; }
+.qitem.is-solved .qitem-text { color: var(--text-soft); }
+.qitem-where { font-size: var(--fs-sm); color: var(--text-soft); }
+.wchip { color: var(--c); font-weight: 600; text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--c) 40%, transparent); }
+
+/* صفحة جناح قريباً */
+.wing-soon { max-width: 640px; margin: 0 auto; padding: var(--sp-7) var(--sp-4) var(--sp-8); text-align: center; }
+.wing-soon-mark { display: grid; place-items: center; width: 96px; height: 96px; margin: 0 auto var(--sp-4); border-radius: 50%; color: var(--c); border: 1.5px solid var(--c); }
+.wing-soon h1 { font-size: var(--fs-2xl); color: var(--c); font-family: var(--font-text); }
+.wing-soon-q { font-family: var(--font-text); font-size: var(--fs-lg); line-height: 1.6; }
+.wing-soon-status { color: var(--text-soft); }
+.wing-soon .panel { text-align: start; margin: var(--sp-6) 0; }
+
+/* الجسر */
+.bridge { min-height: 100dvh; display: grid; place-items: center; padding: var(--sp-7) var(--sp-4); background: var(--bg); }
+.bridge-inner { max-width: 620px; text-align: center; }
+.bridge-title { font-family: var(--font-text); font-size: var(--fs-xl); font-weight: 700; margin-bottom: var(--sp-5); }
+.bridge-intro, .bridge-closing { font-family: var(--font-text); font-size: 1.3rem; line-height: 2; color: var(--text); }
+.bridge-closing { color: var(--text-soft); }
+.bridge-text { margin: var(--sp-6) 0; }
+.bridge-text blockquote { margin: 0 0 var(--sp-2); }
+.bridge-text figcaption { font-size: var(--fs-sm); color: var(--text-soft); }
+.bridge-verse blockquote { color: var(--lamp-deep); font-size: 1.9rem; }
+.bridge-actions { margin-top: var(--sp-6); }

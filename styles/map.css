@@ -1,0 +1,71 @@
+/* الخريطة: لوحة تشريحية على ورق مختبر. */
+
+.map {
+  max-width: 1280px; margin: 0 auto;
+  padding: var(--sp-6) var(--sp-5) var(--sp-8);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  grid-template-areas: "hero hero" "stage side";
+  gap: var(--sp-5) var(--sp-6);
+}
+.map-hero { grid-area: hero; display: grid; grid-template-columns: auto 1fr; gap: var(--sp-2) var(--sp-6); align-items: end; }
+.map-title { font-family: var(--font-text); font-size: var(--fs-2xl); font-weight: 700; margin: 0; }
+.map-verse { margin: 0; justify-self: end; text-align: end; }
+.map-verse blockquote { margin: 0; font-size: 1.45rem; color: var(--lamp-deep); line-height: 1.8; }
+.map-verse figcaption { font-size: var(--fs-sm); color: var(--text-soft); }
+.map-lede { grid-column: 1 / -1; max-width: 62ch; color: var(--text-soft); margin: 0; }
+
+.map-stage { grid-area: stage; }
+.map-board { position: relative; aspect-ratio: 1000 / 720; border: 1px solid var(--line); border-radius: var(--radius-m); background:
+  radial-gradient(circle at 50% 52%, color-mix(in srgb, var(--lamp) 10%, transparent) 0, transparent 38%),
+  repeating-linear-gradient(0deg, transparent 0 39px, color-mix(in srgb, var(--line) 55%, transparent) 39px 40px),
+  repeating-linear-gradient(90deg, transparent 0 39px, color-mix(in srgb, var(--line) 55%, transparent) 39px 40px),
+  var(--bg-raised); }
+.map-svg { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--text-soft); }
+.map-svg .fig { color: color-mix(in srgb, var(--text) 55%, transparent); }
+.map-svg .fig-joint { fill: var(--bg-raised); }
+.map-spoke { stroke: var(--c); stroke-width: 1.2; stroke-dasharray: 3 6; opacity: .55; }
+.map-path { fill: none; stroke: var(--lamp); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; opacity: .9; }
+.map-path--parallel { stroke-dasharray: 2 10; stroke-width: 3; opacity: .7; }
+
+.map-node {
+  position: absolute; transform: translate(-50%, -50%);
+  display: grid; justify-items: center; gap: var(--sp-1);
+  width: 200px; text-align: center; text-decoration: none; color: var(--text);
+  padding: var(--sp-2); border-radius: var(--radius-m);
+}
+.map-node:hover .map-node-dot { transform: scale(1.06); }
+.map-node-dot { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--bg-raised); color: var(--c); border: 2px solid var(--c); transition: transform .2s var(--ease); flex: none; }
+.map-node-text { display: grid; gap: 2px; background: color-mix(in srgb, var(--bg-raised) 92%, transparent); border-radius: var(--radius-s); padding: 2px var(--sp-2); }
+.map-node-name { font-weight: 700; color: var(--c); display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2); font-size: 1.05rem; }
+.map-node-step { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--lamp); color: var(--ink-900); font-size: .72rem; font-weight: 700; }
+.map-node-q { font-family: var(--font-text); font-size: .98rem; line-height: 1.5; }
+.map-node-meta { font-size: .78rem; color: var(--text-soft); }
+
+.map-list { display: none; list-style: none; margin: var(--sp-4) 0 0; padding: 0; gap: var(--sp-2); }
+.map-row { display: grid; grid-template-columns: auto 1fr auto; gap: var(--sp-3); align-items: center; padding: var(--sp-3); border: 1px solid var(--line); border-inline-start: 3px solid var(--c); border-radius: var(--radius-s); text-decoration: none; background: var(--bg-raised); min-height: var(--touch); }
+.map-row .map-node-dot { width: 40px; height: 40px; }
+.map-row-text { display: grid; }
+.map-row-text strong { color: var(--c); }
+.map-row-text span { font-family: var(--font-text); font-size: .98rem; color: var(--text-soft); }
+
+.map-side { grid-area: side; }
+
+@media (max-width: 1080px) {
+  .map { grid-template-columns: 1fr; grid-template-areas: "hero" "stage" "side"; }
+  .map-side { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+  .map-side .panel { margin: 0; }
+}
+@media (max-width: 760px) {
+  .map { padding: var(--sp-5) var(--sp-4) var(--sp-8); }
+  .map-hero { grid-template-columns: 1fr; }
+  .map-verse { justify-self: start; text-align: start; }
+  .map-title { font-size: var(--fs-xl); }
+  .map-node { width: auto; }
+  .map-node-text { display: none; }
+  .map-node-dot { width: 38px; height: 38px; }
+  .map-node-dot svg { width: 18px; height: 18px; }
+  .map-list { display: grid; }
+  .map-side { grid-template-columns: 1fr; }
+  .site-nav .btn { padding: 0 var(--sp-3); }
+}

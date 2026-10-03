@@ -1,0 +1,5 @@
+# المحتوى الخاص ما ينرفع أبداً (ينرفع مشفراً فقط بـ private.enc)
+private/
+.DS_Store
+node_modules/
+tests/output/
