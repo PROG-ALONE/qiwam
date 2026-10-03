@@ -19,11 +19,11 @@ export default {
 
     stage.append(
       h('div.j-text.j-text--wide',
-        h('p.j-line', 'صورت الأشعة. الركبتين جنب بعض.')),
+        h('p.j-line', 'صوّرتُ الأشعة. الركبتان جنبًا إلى جنب.')),
       h('figure.j-xray-fig', frame,
         h('figcaption',
           h('span', 'أشعة جانبية للركبتين. اليسرى هي المصابة.'),
-          h('span.j-disclaimer', 'التسميات توضيحية، والتشخيص من المعالج المختص.'))),
+          h('span.j-disclaimer', 'التسميات توضيحية، والتشخيص من اختصاص المعالج.'))),
       h('div.j-row', hint, showAll));
 
     const ctx = canvas.getContext('2d');

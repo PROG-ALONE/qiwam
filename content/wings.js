@@ -4,32 +4,32 @@
 export default [
   {
     id: 'story', name: 'قصتي', en: 'My Story', color: 'var(--w-story)',
-    question: 'القصة كاملة: التواريخ، والأرقام، والأشعة، والطريق للسجدة.',
+    question: 'القصة كاملة: التواريخ، والأرقام، والأشعة، والطريق إلى السجدة.',
     status: 'soon', lessons: null,
   },
   {
     id: 'anatomy', name: 'التشريح', en: 'Anatomy', color: 'var(--w-anatomy)',
-    question: 'شلون العظم يبني نفسه؟',
+    question: 'كيف يبني العظم نفسه؟',
     status: 'soon', lessons: null,
   },
   {
     id: 'movement', name: 'الحركة', en: 'Movement', color: 'var(--w-movement)',
-    question: 'ليش المرونة مو بس عضلة؟',
+    question: 'لماذا لا تقتصر المرونة على العضلة؟',
     status: 'soon', lessons: null,
   },
   {
     id: 'rehab', name: 'التأهيل', en: 'Rehabilitation', color: 'var(--w-rehab)',
-    question: 'شلون يتعالج وتر؟',
+    question: 'كيف يُعالَج الوتر؟',
     status: 'soon', lessons: null,
   },
   {
     id: 'football', name: 'كرة القدم', en: 'Football', color: 'var(--w-football)',
-    question: 'ليش الإصابة تتجمع بصمت؟',
+    question: 'لماذا تتراكم الإصابة بصمت؟',
     status: 'soon', lessons: null,
   },
   {
     id: 'nutrition', name: 'الغذاء', en: 'Nutrition', color: 'var(--w-nutrition)',
-    question: 'شنو العلاقة بين الصحن والركبة؟',
+    question: 'ما العلاقة بين الطبق والركبة؟',
     status: 'soon', lessons: null,
   },
 ];

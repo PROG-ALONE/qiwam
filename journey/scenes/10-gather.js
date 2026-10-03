@@ -14,7 +14,7 @@ export default {
     const field = h('div.j-gather');
     const chips = ids.map((id, i) => {
       const c = h('span.j-chip', questions[id].text);
-      // توزيع مبعثر ثابت (مو عشوائي حتى يبقى نفس الشكل كل مرة)
+      // توزيع مبعثر ثابت (غير عشوائي ليبقى الشكل نفسه كل مرة)
       const angle = (i / ids.length) * Math.PI * 2 + 0.4;
       c.style.setProperty('--x', `${50 + Math.cos(angle) * 34}%`);
       c.style.setProperty('--y', `${48 + Math.sin(angle) * 34}%`);
@@ -28,7 +28,7 @@ export default {
     field.append(svg);
 
     const line = h('p.j-line.j-line--big.j-final');
-    const hint = h('p.j-hint', 'المس حتى تتجمع الأسئلة');
+    const hint = h('p.j-hint', 'المس لتجتمع الأسئلة');
     const tap = h('button.j-tapzone', { type: 'button', 'aria-label': 'اجمع الأسئلة' });
 
     stage.append(field, h('div.j-center.j-center--bottom', line, hint), tap);
@@ -56,7 +56,7 @@ export default {
       });
       setTimeout(() => {
         field.classList.add('is-gathered');
-        const t = typewriter(line, 'كل سؤال من هذي له جواب. والجواب علم.');
+        const t = typewriter(line, 'لكل سؤال من هذه الأسئلة جواب. والجواب علم.');
         t.done.then(done);
       }, reducedMotion() ? 0 : 1400 + chips.length * 90);
     }
@@ -64,7 +64,7 @@ export default {
     return {
       finish: () => {
         if (!gathered) { gathered = true; tap.remove(); hint.hidden = true; chips.forEach(c => (c.style.opacity = 0)); field.classList.add('is-gathered'); }
-        line.textContent = 'كل سؤال من هذي له جواب. والجواب علم.';
+        line.textContent = 'لكل سؤال من هذه الأسئلة جواب. والجواب علم.';
         done();
       },
     };

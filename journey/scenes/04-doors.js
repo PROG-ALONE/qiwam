@@ -1,19 +1,19 @@
 import { h } from '../../core/ui/dom.js';
 
-// ثلاث أطباء، بدون أسماء وبدون اتهام. بس شنو حسيت كمريض ما لاقي جواب.
+// ثلاثة أطباء، بلا أسماء ولا اتهام. فقط ما شعرتُ به كمريض لا يجد جوابًا.
 const DOORS = [
-  { answer: 'ما بيك شي.' },
+  { answer: 'لا شيء فيك.' },
   { answer: 'خشونة.' },
-  { answer: 'إبرة.', after: 'وبعد الإبرة، ورمت رجلي كلها.' },
+  { answer: 'إبرة.', after: 'وبعد الإبرة، تورّمت رجلي كلها.' },
 ];
 
 export default {
-  title: 'ثلاث أطباء',
+  title: 'ثلاثة أطباء',
   date: '2025',
   tone: 'night',
   questions: ['q.diagnosis'],
   mount(stage, { done }) {
-    const ending = h('p.j-line.j-reveal', { hidden: true }, 'وبالنهاية، الكل وصل لنفس الجواب: ما بيك شي.');
+    const ending = h('p.j-line.j-reveal', { hidden: true }, 'وفي النهاية، انتهى الجميع إلى الجواب نفسه: لا شيء فيك.');
     const opened = new Set();
 
     const doors = DOORS.map((d, i) => {
@@ -35,7 +35,7 @@ export default {
 
     stage.append(
       h('div.j-text.j-text--wide',
-        h('p.j-line', 'خلال 2025، رحت لثلاث أطباء.'),
+        h('p.j-line', 'خلال عام 2025، راجعتُ ثلاثة أطباء.'),
         h('p.j-line.j-soft', 'افتح الأبواب.')),
       h('div.j-doors', doors.map(d => d.wrap)),
       h('div.j-text.j-text--wide', ending));

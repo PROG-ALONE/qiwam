@@ -78,14 +78,14 @@ export function render(root) {
       h('span.qitem-body',
         h('span.qitem-text', q.text),
         solved
-          ? h('span.qitem-where', id === 'q.what' ? 'انحل بالقصة: السجدة.' : 'انحل.')
-          : h('span.qitem-where', 'جوابه بـ ', q.wings.map((wid, i) => [i ? ' و' : '', h('a.wchip', { href: `#/${wid}`, style: { '--c': byId[wid].color } }, byId[wid].name)]))));
+          ? h('span.qitem-where', id === 'q.what' ? 'حُلّ في القصة: السجدة.' : 'حُلّ.')
+          : h('span.qitem-where', 'جوابه في ', q.wings.map((wid, i) => [i ? ' و' : '', h('a.wchip', { href: `#/${wid}`, style: { '--c': byId[wid].color } }, byId[wid].name)]))));
   }));
 
   const last = store.get('progress', 'lastLesson', null);
   const cont = last
-    ? h('a.btn.btn--primary', { href: last.href }, `كمّل: ${last.title}`)
-    : h('p.empty', 'ما فتحت أي درس بعد. الأجنحة تنفتح وحدة وحدة، وأولها قصتي.');
+    ? h('a.btn.btn--primary', { href: last.href }, `تابِع: ${last.title}`)
+    : h('p.empty', 'لم تفتح أي درس بعد. تُفتح الأجنحة واحدًا تلو الآخر، وأولها قصتي.');
 
   root.append(
     header(),
@@ -95,14 +95,14 @@ export function render(root) {
         h('figure.map-verse',
           h('blockquote.scripture', `﴿${mapVerse.text}﴾`),
           h('figcaption', mapVerse.source)),
-        h('p.map-lede', 'ست علوم يحتاجها لاعب كرة القدم، وكلها تبدي من نفس الجسم. المسار المضيء هو الترتيب المقترح، والغذاء يمشي وياه بالتوازي.')),
+        h('p.map-lede', 'ستة علوم يحتاجها لاعب كرة القدم، وكلها تنطلق من الجسم نفسه. المسار المضيء هو الترتيب المقترح، والغذاء يسير معه بالتوازي.')),
       h('section.map-stage', { 'aria-label': 'الأجنحة' }, board, list),
       h('div.map-side',
         h('section.panel',
           h('h2', 'أسئلتي المفتوحة'),
-          asked.length ? qList : h('p.empty', 'الأسئلة اللي تتجمع بالقصة وبالدروس تظهر هنا.')),
+          asked.length ? qList : h('p.empty', 'تظهر هنا الأسئلة التي تجمّعت في القصة وفي الدروس.')),
         h('section.panel',
-          h('h2', 'كمّل من وين وقفت'),
+          h('h2', 'تابِع من حيث توقفت'),
           cont,
           h('p.panel-foot', h('a', { href: '#/journey/1' }, 'أعد القصة'))))));
 }

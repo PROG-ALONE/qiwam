@@ -11,7 +11,7 @@ export default {
     const tap = h('button.j-tapzone', { type: 'button', 'aria-label': 'أكمل' });
     stage.append(h('div.j-center', line, hint), tap);
 
-    const text = 'أصعب حركة مرت عليّ ما كانت تسديدة، ولا رفعة 360 باوند. كانت حركة يسويها طفل عمره سبع سنين.';
+    const text = 'أصعب حركة مرّت عليّ لم تكن تسديدة، ولا رفعة بوزن 360 باوندًا. كانت حركة يؤدّيها طفل في السابعة من عمره.';
     const t = typewriter(line, text);
     let typed = false;
     t.done.then(() => { typed = true; hint.hidden = false; });

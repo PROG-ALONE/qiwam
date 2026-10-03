@@ -51,7 +51,7 @@ export async function render(root, params) {
   const stage = h('div.j-stage', { 'data-scene': n });
   const qBox = h('div.j-questions', { 'aria-live': 'polite' });
   const prev = h('button.btn.btn--quiet', { type: 'button', disabled: n === 1 }, 'السابق');
-  const next = h('button.btn.btn--primary.j-next', { type: 'button', disabled: true }, n === SCENES ? 'كمّل' : 'التالي');
+  const next = h('button.btn.btn--primary.j-next', { type: 'button', disabled: true }, n === SCENES ? 'تابِع' : 'التالي');
 
   const section = h('section.journey', { 'data-scene': n, 'data-tone': mod.tone || 'night' },
     h('header.j-top',

@@ -47,7 +47,7 @@ async function render() {
       if (h1) document.title = `${h1.textContent.trim()} — قِوام`;
     } catch (err) {
       console.error(err);
-      root.replaceChildren(Object.assign(document.createElement('p'), { className: 'noscript', textContent: 'ما انفتحت هذي الصفحة. حدّث الصفحة وجرّب مرة ثانية.' }));
+      root.replaceChildren(Object.assign(document.createElement('p'), { className: 'noscript', textContent: 'تعذّر فتح هذه الصفحة. حدّث الصفحة وحاول مرة أخرى.' }));
     }
     return;
   }

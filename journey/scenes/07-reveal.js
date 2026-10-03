@@ -1,6 +1,6 @@
 import { h, s, wait, reducedMotion } from '../../core/ui/dom.js';
 
-// قلب المدخل. بدون موسيقى، وبدون دراما. هدوء، ووقفة.
+// قلب المدخل. بلا موسيقى ولا دراما. هدوء، ووقفة.
 export default {
   title: 'الكشف',
   date: 'رمضان 2026',
@@ -8,13 +8,13 @@ export default {
   questions: [],
   mount(stage, { done, answer }) {
     const lines = [
-      h('p.j-line.j-quiet', 'الليلة التاسعة عشر.'),
-      h('p.j-line.j-quiet', 'أردت أصلي التراويح كاملة.'),
+      h('p.j-line.j-quiet', 'الليلة التاسعة عشرة.'),
+      h('p.j-line.j-quiet', 'أردتُ أن أصلّي التراويح كاملة.'),
     ];
     const reveal = [
       h('p.j-line.j-line--big.j-quiet', 'السجدة.'),
-      h('p.j-line.j-quiet', 'الحركة اللي يسويها طفل عمره سبع سنين، صارت أصعب حركة بحياتي.'),
-      h('p.j-line.j-soft.j-quiet', 'من ذيك الليلة أصلي على الكرسي، لأن ركبتي ما تنثني أكثر من 90 درجة.'),
+      h('p.j-line.j-quiet', 'الحركة التي يؤدّيها طفل في السابعة من عمره صارت أصعب حركة في حياتي.'),
+      h('p.j-line.j-soft.j-quiet', 'ومنذ تلك الليلة أصلّي على الكرسي، لأن ركبتي لا تنثني أكثر من 90 درجة.'),
     ];
     reveal.forEach(r => (r.hidden = true));
 

@@ -13,8 +13,8 @@ export default {
     k.el.setAttribute('data-drag', '');
     k.el.classList.add('is-draggable');
     const deg = h('output.j-angle.ltr', '0°');
-    const verdict = h('p.j-line.j-line--big.j-reveal', { hidden: true }, 'تسعين درجة. بس.');
-    const hint = h('p.j-hint', 'اسحب الساق للخلف حتى تثني الركبة');
+    const verdict = h('p.j-line.j-line--big.j-reveal', { hidden: true }, 'تسعون درجة. لا أكثر.');
+    const hint = h('p.j-hint', 'اسحب الساق إلى الخلف لتثني الركبة');
     // بديل للكيبورد وقارئ الشاشة
     const range = h('input.j-range.j-range--mini', { type: 'range', min: 0, max: 140, value: 0, 'aria-label': 'زاوية ثني الركبة', 'data-drag': '' });
 
@@ -48,7 +48,7 @@ export default {
 
     stage.append(h('div.j-split',
       h('div.j-text',
-        h('p.j-line', 'ثني الركبة. حركة نسويها مئات المرات باليوم بدون ما ننتبه.'),
+        h('p.j-line', 'ثني الركبة. حركة نؤدّيها مئات المرات في اليوم دون أن ننتبه.'),
         hint, verdict),
       h('figure.j-figure', k.el, h('div.j-control', deg, range))));
 

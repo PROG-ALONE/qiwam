@@ -18,18 +18,18 @@ export function render(root) {
     }));
 
   // مسح البيانات: ضغطتين بدل نافذة تأكيد
-  const wipe = h('button.btn', { type: 'button' }, 'امسح تقدمي من هذا الجهاز');
+  const wipe = h('button.btn', { type: 'button' }, 'امسح تقدّمي من هذا الجهاز');
   let armed = false;
   wipe.addEventListener('click', () => {
-    if (!armed) { armed = true; wipe.textContent = 'اضغط مرة ثانية للتأكيد'; wipe.classList.add('is-danger'); setTimeout(() => { armed = false; wipe.textContent = 'امسح تقدمي من هذا الجهاز'; wipe.classList.remove('is-danger'); }, 4000); return; }
+    if (!armed) { armed = true; wipe.textContent = 'اضغط مرة أخرى للتأكيد'; wipe.classList.add('is-danger'); setTimeout(() => { armed = false; wipe.textContent = 'امسح تقدّمي من هذا الجهاز'; wipe.classList.remove('is-danger'); }, 4000); return; }
     store.clearAll(); applyTheme(); go('#/journey/1');
   });
 
   root.append(header(), h('main.page',
     h('h1', 'الإعدادات'),
     h('section.panel', h('h2', 'المظهر'), group),
-    h('section.panel', h('h2', 'القصة'), h('p', 'تكدر تعيد المدخل بأي وقت. الخريطة تبقى مفتوحة.'), h('a.btn', { href: '#/journey/1' }, 'أعد القصة')),
-    h('section.panel', h('h2', 'البيانات'), h('p', 'تقدمك محفوظ على هذا الجهاز بس. التصدير والاستيراد جايين بمرحلة لاحقة.'), wipe),
+    h('section.panel', h('h2', 'القصة'), h('p', 'يمكنك إعادة المدخل في أي وقت، وتبقى الخريطة مفتوحة.'), h('a.btn', { href: '#/journey/1' }, 'أعد القصة')),
+    h('section.panel', h('h2', 'البيانات'), h('p', 'تقدّمك محفوظ على هذا الجهاز فقط. التصدير والاستيراد في مرحلة لاحقة.'), wipe),
     h('section.panel.about', h('h2', 'عن قِوام'),
-      h('p', 'منصة تعليمية بعلوم جسم لاعب كرة القدم. المحتوى تعليمي، ولا يغني عن الطبيب أو المعالج الطبيعي.'))));
+      h('p', 'منصة تعليمية في علوم جسم لاعب كرة القدم. المحتوى تعليمي، ولا يغني عن الطبيب أو المعالج الطبيعي.'))));
 }

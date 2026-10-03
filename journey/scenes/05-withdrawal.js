@@ -1,12 +1,12 @@
 import { h, s } from '../../core/ui/dom.js';
 
-// محطات الانسحاب من البرومت 08 بالضبط. الوزن: 69 بالبداية، و85 بعد رمضان (ما عندنا قراءات بينهما، فما نرسم منحنى).
+// محطات الانسحاب من البرومت 08 بالضبط. الوزن: 69 في البداية، و85 بعد رمضان (لا توجد قراءات بينهما، فلا نرسم منحنى).
 const STOPS = [
-  { label: 'أيار 2025', text: 'رجلي صارت توجعني. وكملت.' },
-  { label: 'تشرين الأول 2025', text: 'وقفت حديد الرجل. وبقيت ألعب طوبة.', drop: 'legs' },
-  { label: 'تشرين الثاني 2025', text: 'وقفت الطوبة. ما بقيت أكدر.', drop: 'ball' },
-  { label: 'شباط 2026', text: 'وقفت كل شي.', drop: 'all' },
-  { label: 'بعد رمضان 2026', text: 'رجعت للحديد، بس الجزء العلوي. والميزان صعد.', weight: true },
+  { label: 'أيار 2025', text: 'بدأت رجلي تؤلمني. وواصلت.' },
+  { label: 'تشرين الأول 2025', text: 'توقفتُ عن تمارين الحديد للرجلين، وبقيت ألعب كرة القدم.', drop: 'legs' },
+  { label: 'تشرين الثاني 2025', text: 'توقفتُ عن كرة القدم. لم أعد أستطيع.', drop: 'ball' },
+  { label: 'شباط 2026', text: 'توقفتُ عن كل شيء.', drop: 'all' },
+  { label: 'بعد رمضان 2026', text: 'عدتُ إلى الحديد، للجزء العلوي فقط. وصعد الميزان.', weight: true },
 ];
 
 export default {
@@ -16,8 +16,8 @@ export default {
   questions: ['q.silent', 'q.plate'],
   mount(stage, { done }) {
     const items = {
-      legs: h('li.j-item', h('span.j-item-icon', { 'aria-hidden': 'true' }, barbell()), 'حديد الرجل'),
-      ball: h('li.j-item', h('span.j-item-icon', { 'aria-hidden': 'true' }, ball()), 'الطوبة'),
+      legs: h('li.j-item', h('span.j-item-icon', { 'aria-hidden': 'true' }, barbell()), 'حديد الرجلين'),
+      ball: h('li.j-item', h('span.j-item-icon', { 'aria-hidden': 'true' }, ball()), 'كرة القدم'),
       rest: h('li.j-item', h('span.j-item-icon', { 'aria-hidden': 'true' }, barbell(true)), 'الحديد العلوي'),
     };
     const list = h('ul.j-items', Object.values(items));
@@ -44,7 +44,7 @@ export default {
 
     stage.append(
       h('div.j-text.j-text--wide',
-        h('p.j-line', 'ما توقفت مرة وحدة. انسحبت شوي شوي.'),
+        h('p.j-line', 'لم أتوقف دفعة واحدة. انسحبتُ شيئًا فشيئًا.'),
         h('p.j-line.j-soft', 'اسحب الزمن.')),
       h('div.j-withdraw',
         h('div.j-timebox', when, what),

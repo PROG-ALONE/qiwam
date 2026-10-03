@@ -9,10 +9,10 @@ export default {
   mount(stage, { done }) {
     const k = knee({ angle: 8, bump: 0.15, skin: 1 });
     const lines = [
-      h('p.j-line', 'العلامة الأولى ما كانت بالملعب. كانت بالصلاة.'),
-      h('p.j-line', 'وأنا أصلي، لاحظت نتوء برجلي. كلت: حباية.'),
-      h('p.j-line.j-reveal', { hidden: true }, 'بس النتوء صار يكبر ويكبر...'),
-      h('p.j-line.j-reveal', { hidden: true }, 'لحد ما العظم طلع.'),
+      h('p.j-line', 'العلامة الأولى لم تظهر في الملعب، بل في الصلاة.'),
+      h('p.j-line', 'وأنا أصلّي، لاحظتُ نتوءًا في رجلي. قلت: حبّة.'),
+      h('p.j-line.j-reveal', { hidden: true }, 'لكنّ النتوء أخذ يكبر ويكبر...'),
+      h('p.j-line.j-reveal', { hidden: true }, 'حتى برز العظم.'),
     ];
     const hint = h('p.j-hint', 'المس النتوء');
     const target = h('button.j-hit', { type: 'button', 'aria-label': 'المس النتوء' }, k.el);

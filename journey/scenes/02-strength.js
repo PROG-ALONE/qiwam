@@ -8,8 +8,8 @@ export default {
   questions: ['q.load'],
   mount(stage, { done }) {
     const k = knee({ load: 0 });
-    const feel = h('output.j-readout', 'شنو أحس: ولا شي');
-    const after = h('p.j-line.j-reveal', { hidden: true }, 'والوتر كان يشيل كل هذا. بصمت.');
+    const feel = h('output.j-readout', 'ما أشعر به: لا شيء');
+    const after = h('p.j-line.j-reveal', { hidden: true }, 'وكان الوتر يحمل ذلك كله. بصمت.');
 
     const slider = h('input.j-range', {
       type: 'range', min: 0, max: 100, value: 0, step: 1,
@@ -19,7 +19,7 @@ export default {
 
     const update = (v) => {
       k.set({ load: v / 100 });
-      // الإحساس ما يتغير: هذا هو المعنى
+      // الإحساس لا يتغير: وهذا هو المعنى
       if (v >= 90) finish();
     };
     slider.addEventListener('input', () => update(+slider.value));
@@ -27,10 +27,10 @@ export default {
     stage.append(
       h('div.j-split',
         h('div.j-text',
-          h('p.j-line', 'ملعب، ومشي ساعة كل يوم، وحديد.'),
-          h('p.j-line', 'ليك برس بـ 360 باوند، ووزني 69 كيلو.'),
-          h('p.j-line', 'وبـ 31 تموز 2025 ناقشت رسالة الماجستير.'),
-          h('p.j-line.j-soft', 'كل شي كان يصعد. اسحب الحمل وشوف.'),
+          h('p.j-line', 'ملعب، ومشي ساعة كل يوم، وتمارين الحديد.'),
+          h('p.j-line', 'ضغط الأرجل بوزن 360 باوندًا، ووزني 69 كيلوغرامًا.'),
+          h('p.j-line', 'وفي 31 تموز 2025 ناقشتُ رسالة الماجستير.'),
+          h('p.j-line.j-soft', 'كان كل شيء يصعد. اسحب الحمل وشاهد.'),
           after),
         h('figure.j-figure', k.el,
           h('div.j-control', loadLabel, slider, feel))));

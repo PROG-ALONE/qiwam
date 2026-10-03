@@ -1,4 +1,4 @@
-// صفحة جناح لسه ما انبنى: هويته، وسؤاله، والأسئلة المفتوحة اللي يحمل جوابها.
+// صفحة جناح لم يُبنَ بعد: هويته، وسؤاله، والأسئلة المفتوحة التي يحمل جوابها.
 import { h } from './ui/dom.js';
 import { header } from './ui/header.js';
 import { wingIcon } from './ui/icons.js';
@@ -18,9 +18,9 @@ export function render(root, { wing }) {
       h('div.wing-soon-mark', wingIcon(w.id, 56)),
       h('h1', w.name),
       h('p.wing-soon-q', w.question),
-      h('p.wing-soon-status', 'هذا الجناح قيد البناء. راح ينفتح هنا لما يكتمل أول درس فيه.'),
+      h('p.wing-soon-status', 'هذا الجناح قيد البناء، وسيُفتح هنا حين يكتمل أول درس فيه.'),
       related.length ? h('section.panel',
         h('h2', 'أسئلة من القصة جوابها هنا'),
         h('ul.qlist', related.map(([, q]) => h('li.qitem', h('span.qitem-mark', { 'aria-hidden': 'true' }, '؟'), h('span.qitem-body', h('span.qitem-text', q.text)))))) : null,
-      h('a.btn', { href: '#/map' }, 'رجوع للخريطة')));
+      h('a.btn', { href: '#/map' }, 'العودة إلى الخريطة')));
 }
