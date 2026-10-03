@@ -22,7 +22,7 @@ const POS = Object.fromEntries(ORDER.map((id, i) => {
 export function render(root) {
   const st = journeyState();
   const byId = Object.fromEntries(wings.map(w => [w.id, w]));
-  const meta = (w) => (w.status === 'soon' ? 'قريبًا' : `${w.lessons} درسًا`);
+  const meta = (w) => (w.status === 'soon' ? 'قريبًا' : w.lessons === 1 ? 'درس واحد منشور' : `${w.lessons} دروس منشورة`);
 
   // ——— اللوحة ———
   const svg = s('svg', { viewBox: '0 0 1000 720', class: 'map-svg', 'aria-hidden': 'true' });
@@ -96,7 +96,7 @@ export function render(root) {
         h('section.panel',
           h('h2', 'تابِع من حيث توقفت'),
           cont,
-          h('p.panel-foot', h('a', { href: '#/journey/1' }, 'أعد القصة'))),
+          h('p.panel-foot', h('a', { href: '#/journey/1' }, 'أعد القصة'), ' · ', h('a', { href: '#/glossary' }, 'المسرد'), ' · ', h('a', { href: '#/library' }, 'المكتبة'))),
         h('section.panel',
           h('h2', 'أسئلتي المفتوحة'),
           st.asked.length ? qList : h('p.empty', 'تظهر هنا الأسئلة التي تجمّعت في القصة وفي الدروس.'))),

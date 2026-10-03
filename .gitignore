@@ -3,3 +3,4 @@ private/
 .DS_Store
 node_modules/
 tests/output/
+refs/pdf/test-*.pdf

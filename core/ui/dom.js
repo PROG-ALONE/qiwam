@@ -18,6 +18,7 @@ export function h(tag, attrs, ...children) {
       }
     }
     else if (k === 'html') el.innerHTML = v;
+    else if (k === 'class') String(v).split(/\s+/).filter(Boolean).forEach(c => el.classList.add(c));
     else el.setAttribute(k, v === true ? '' : v);
   }
   append(el, children);

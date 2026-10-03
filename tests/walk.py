@@ -32,7 +32,7 @@ async def run(name, opts, scheme):
         await pg.screenshot(path=f'{OUT}/{name}-{scheme}-11-bridge.png', full_page=True)
         await pg.click('.bridge-go'); await pg.wait_for_selector('.map'); await pg.wait_for_timeout(600)
         await pg.screenshot(path=f'{OUT}/{name}-{scheme}-12-map.png', full_page=True)
-        await pg.click('a.sci[href="#/body"]')
+        await pg.click('a.sci[href="#/anatomy"]')
         await pg.wait_for_selector('.wing-soon'); await pg.wait_for_timeout(300)
         await pg.screenshot(path=f'{OUT}/{name}-{scheme}-13-wing.png', full_page=True)
         # زائر راجع يفتح على الخريطة

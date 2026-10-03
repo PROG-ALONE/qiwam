@@ -1,0 +1,12 @@
+{
+  "name": "qiwam",
+  "private": true,
+  "type": "module",
+  "description": "قِوام: منصة عربية لتعلّم علوم جسم الإنسان",
+  "scripts": {
+    "check": "node tools/check-all.mjs",
+    "check:offline": "node tools/check-all.mjs --offline",
+    "pdfs": "node tools/fetch-pdfs.mjs",
+    "serve": "python3 -m http.server 8000"
+  }
+}

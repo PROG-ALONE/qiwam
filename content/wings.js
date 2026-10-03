@@ -7,7 +7,7 @@ export default [
     id: 'body', name: 'الجسم من الداخل', en: 'Inside the Body', color: 'var(--w-body)',
     desc: 'من الخلية إلى النسيج إلى العضو إلى الجهاز: كيف تعمل الأعضاء الداخلية، وأين يذهب الماء والطعام، وكيف يصفّي الكبد ويُصنع الدم، وما أمراضها وكيف تُشخَّص وتُعالَج.',
     question: 'أين تذهب لقمتك بعد أن تبلعها؟',
-    status: 'soon', lessons: null,
+    status: 'open', lessons: 1,
   },
   {
     id: 'anatomy', name: 'التشريح', en: 'Anatomy', color: 'var(--w-anatomy)',

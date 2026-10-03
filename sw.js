@@ -1,13 +1,13 @@
 // Service Worker أولي (المرحلة A1): يكاش القشرة ويخدم الملفات من الكاش عند انقطاع الإنترنت.
 // المرحلة A3 تكمّله: كاش المحتوى عند الطلب، وإشعار التحديث، والـ PDF.
 
-const VERSION = 'qiwam-a1-1';
+const VERSION = 'qiwam-a2-1';
 
 self.addEventListener('install', (e) => {
   self.skipWaiting();
   e.waitUntil(caches.open(VERSION).then(c => c.addAll([
     './', 'index.html', 'manifest.webmanifest',
-    'styles/tokens.css', 'styles/base.css', 'styles/layout.css', 'styles/journey.css', 'styles/map.css',
+    'styles/tokens.css', 'styles/base.css', 'styles/layout.css', 'styles/journey.css', 'styles/map.css', 'styles/lesson.css',
     'core/app.js', 'core/router.js', 'core/store.js', 'core/theme.js',
   ])));
 });

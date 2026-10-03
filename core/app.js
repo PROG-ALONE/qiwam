@@ -14,7 +14,14 @@ route('#/journey/:n', async () => import('../journey/journey.js'));
 route('#/bridge', async () => import('../journey/bridge.js'));
 route('#/map', async () => import('../journey/map.js'));
 route('#/settings', async () => import('./settings.js'));
-route('#/:wing', async () => import('./wing-soon.js'));
+route('#/search', async () => import('./search/search.js'));
+route('#/glossary', async () => import('./glossary/glossary.js'));
+route('#/library', async () => import('./refs/library.js'));
+route('#/review', async () => import('./review.js'));
+route('#/pdf', async () => import('./refs/pdf-view.js'));
+route('#/e/:id', async () => import('./entities/page.js'));
+route('#/:wing/:level/:course/:lesson', async () => import('./lesson/lesson.js'));
+route('#/:wing', async () => import('./wing-home.js'));
 
 setGuard((path) => {
   const st = journeyState();
@@ -29,7 +36,8 @@ setGuard((path) => {
   if (seg === 'bridge') return st.completed || st.reached >= SCENES ? null : `#/journey/${st.reached}`;
   // كل شي ثاني مقفول لحد ما يكمل المدخل
   if (!st.completed) return `#/journey/${st.reached}`;
-  if (seg !== 'map' && !WINGS.includes(seg)) return '#/map';
+  const PAGES = ['map', 'search', 'glossary', 'library', 'review', 'pdf', 'e'];
+  if (!PAGES.includes(seg) && !WINGS.includes(seg)) return '#/map';
   return null;
 });
 
