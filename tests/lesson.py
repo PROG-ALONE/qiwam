@@ -11,7 +11,8 @@ async def interact(pg, key):
     if key == 'atoms':
         for i in range(2): await v.locator('.mol-h').nth(i).dispatch_event('click')
     elif key == 'cell':
-        for p in ['membrane', 'cytoplasm', 'organelle']: await v.locator(f'[data-part="{p}"]').first.dispatch_event('click')
+        for p in ['membrane', 'nucleus', 'mito', 'golgi']: await v.locator(f'g[data-part="{p}"]').first.dispatch_event('click')
+        await pg.locator('.lsn-more summary').click()
     elif key == 'tissue':
         await v.locator('input[type=range]').fill('20')
     elif key == 'four':
@@ -20,6 +21,18 @@ async def interact(pg, key):
         await v.locator('[data-e="organ.liver"]').dispatch_event('click')
     elif key == 'count':
         await v.locator('.cc-tabs button').nth(1).click()
+    elif key == 'percent':
+        await v.locator('.fx-slider input').first.fill('20')
+        assert '66.7' in await v.locator('.fx-result').inner_text(), 'formula result wrong'
+        await v.locator('.cc-tabs button').nth(1).click()
+        await v.locator('.fx-practice input').fill('50'); await v.locator('.fx-practice .btn--primary').click()
+        await v.locator('.fx-pfb .qz-verdict').wait_for()
+    elif key == 'recap':
+        n = await pg.locator('.rc-dots li').count()
+        for i in range(n):
+            await pg.locator('.rc-reveal').click(); await pg.locator('.rc-ok' if i % 3 else '.rc-miss').click()
+        await pg.locator('.rc-miss-list').wait_for()
+        assert await pg.locator('.cm-node').count() >= 8, 'concept map missing'
     elif key == 'touch':
         await v.locator('.pp-dot').dispatch_event('click')
     elif key == 'story':
@@ -82,6 +95,10 @@ async def run(name, opts):
         await pg.locator('.lsn-nav .btn--primary').click(); await pg.wait_for_selector('.ls-refs')
         await pg.screenshot(path=f'{OUT}/{name}-refs.png', full_page=True)
         await pg.locator('.lsn-nav .btn--primary').click(); await pg.wait_for_selector('.lsn-toc')
+        await pg.goto(BASE + '#/body'); await pg.wait_for_selector('.wh-review'); await pg.click('.wh-review')
+        await pg.wait_for_selector('.lvr-lesson'); await pg.locator('.lvr-recall summary').first.click()
+        await pg.screenshot(path=f'{OUT}/{name}-level-review.png', full_page=True)
+        await pg.locator('.lvr-test .btn--primary').click(); await pg.wait_for_selector('.qz-q')
         for path, sel in [('#/search?q=الكبد', '.search-group'), ('#/glossary', '.gl-item'), ('#/library', '.lib-item'), ('#/review', 'main.page'), ('#/map', '.sci')]:
             await pg.goto(BASE + path); await pg.wait_for_selector(sel)
         await b.close()

@@ -13,6 +13,8 @@ export default {
     cites: {
       '1.2': { title: '1.2 Structural Organization of the Human Body', url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/1-2-structural-organization-of-the-human-body' },
       '1.7': { title: '1.7 Medical Imaging', url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/1-7-medical-imaging' },
+      '3.2': { title: '3.2 The Cytoplasm and Cellular Organelles', url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/3-2-the-cytoplasm-and-cellular-organelles' },
+      '3.3': { title: '3.3 The Nucleus and DNA Replication', url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/3-3-the-nucleus-and-dna-replication' },
       '4.1': { title: '4.1 Types of Tissues', url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/4-1-types-of-tissues' },
       '4.3': { title: '4.3 Connective Tissue Supports and Protects', url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/4-3-connective-tissue-supports-and-protects' },
       '19.1': { title: '19.1 Heart Anatomy', url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/19-1-heart-anatomy' },

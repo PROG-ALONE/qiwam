@@ -5,6 +5,7 @@ import path from 'node:path';
 import { allLessons, questionsFor, imp, impAll, cites, ROOT, reporter } from './lib.mjs';
 
 const { REFS } = await impAll('content/refs/index.js');
+const formulas = await imp('content/formulas/index.js');
 const glossary = await imp('content/glossary.js');
 const R = reporter('فحص المحتوى');
 
@@ -33,11 +34,23 @@ for (const { file, lesson: L } of await allLessons()) {
     else if (!existsSync(path.join(ROOT, 'core/viz/visuals', `${s.visual.id}.js`))) R.error(`${w}: الرسم ${s.visual.id} غير موجود`);
     const n = s.html.replace(/<ref-card[^>]*><\/ref-card>/g, '').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
     if (n > STEP_WORDS) R.warn(`${w}: ${n} كلمة. الخطوة فكرة واحدة؛ اختصر إلى ${STEP_WORDS} أو قسّمها.`);
-    const cs = cites(s.html);
+    // القالب الموسّع: الفكرة في سطر، وسؤال تذكّر للمراجعة الموجهة، و«اشرح أكثر» (معفى من حد الكلمات)
+    if (!s.key) R.error(`${w}: لا توجد «الفكرة في سطر» (key)`);
+    if (!s.recall?.q || !s.recall?.a) R.error(`${w}: لا يوجد سؤال تذكّر (recall: {q, a})`);
+    if (!s.more) R.warn(`${w}: لا يوجد «اشرح أكثر» (more)`);
+    if (s.visual?.id === 'vis.formula') {
+      const F = formulas[s.visual.props?.formula];
+      if (!F) R.error(`${w}: المعادلة ${s.visual.props?.formula} غير موجودة في content/formulas`);
+      else for (const k of ['vars', 'parts', 'compute', 'steps', 'practice']) if (!F[k]) R.error(`${w}: المعادلة ينقصها ${k}`);
+    }
+    const cs = [...cites(s.html), ...cites(s.more || '')];
     if (s.kind === 'science' && !cs.length) R.error(`${w}: خطوة علمية بلا مراجع`);
     cs.forEach(c => checkCite(w, c));
     if (s.check && (!s.check.options?.some(o => o.id === s.check.correct) || !s.check.explain)) R.error(`${w}: الفحص السريع ناقص (الجواب أو الشرح)`);
   }
+  // خريطة الدرس: كل عقدة تشير إلى خطوة موجودة
+  const walk = (n) => { if (!stepIds.has(n.step)) R.error(`${file}: عقدة في خريطة الدرس تشير إلى خطوة غير موجودة «${n.step}»`); (n.kids || []).forEach(walk); };
+  if (L.map) walk(L.map); else R.warn(`${file}: لا توجد خريطة للدرس (map)`);
   for (const g of L.glossary || []) if (!glossary.find(x => x.id === g)) R.error(`${file}: مصطلح غير موجود في المسرد ${g}`);
   (L.flashcards || []).forEach((f, i) => f.ref && checkCite(`${file} بطاقة ${i + 1}`, f.ref));
 

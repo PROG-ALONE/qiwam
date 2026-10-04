@@ -33,13 +33,14 @@ export async function render(root, params) {
   // ترقيم المراجع بترتيب أول ظهور في الدرس كله
   const refNums = new Map();
   const numFor = (rid) => { if (!refNums.has(rid)) refNums.set(rid, refNums.size + 1); return refNums.get(rid); };
-  for (const s of lesson.steps) for (const m of s.html.matchAll(/<cite r="([^"]+)"/g)) numFor(parseCite(m[1]).id);
+  for (const s of lesson.steps) for (const m of `${s.html}${s.more || ''}`.matchAll(/<cite r="([^"]+)"/g)) numFor(parseCite(m[1]).id);
   (lesson.refs || []).forEach(numFor);
 
   // الشاشات: الخطوات ثم الخاتمة
   const stages = [
     ...lesson.steps.map(s => ({ key: s.id, title: s.title, kind: s.kind, step: s })),
     { key: 'summary', title: 'الخلاصة', kind: 'end' },
+    { key: 'recap', title: 'المراجعة الموجهة', kind: 'end' },
     { key: 'cards', title: 'راجع بالبطاقات', kind: 'end' },
     { key: 'quiz', title: 'اختبر نفسك', kind: 'end' },
     { key: 'refs', title: 'المراجع', kind: 'end' },
@@ -134,11 +135,17 @@ export async function render(root, params) {
         h('h2#lsn-title', s.title),
         fig,
         h('div.lsn-text', enhance(s.html)),
+        s.key ? h('aside.lsn-key', h('span.lsn-key-t', 'الفكرة في سطر'), h('p', s.key)) : null,
+        s.more ? h('details.lsn-more', h('summary', 'اشرح أكثر'), h('div.lsn-more-body', enhance(s.more))) : null,
         s.check ? quickCheck(s.check) : null].filter(Boolean));
       if (s.visual) loadVisual(s.visual.id).then(mod => mod.mount(fig, s.visual.props || {}));
       else fig.remove();
     } else if (st.key === 'summary') {
       body.append(h('h2#lsn-title', 'الخلاصة'), h('ol.lsn-summary', lesson.summary.map(x => h('li', x))));
+    } else if (st.key === 'recap') {
+      body.append(h('h2#lsn-title', 'المراجعة الموجهة'),
+        h('p', 'نمرّ على خطوات الدرس بالترتيب: سؤال، ثم تحاول التذكّر، ثم تكشف الجواب والفكرة الأساسية. وما لم تتذكّره تعود إليه.'),
+        guidedRecap(), lesson.map ? conceptMap(lesson.map) : null);
     } else if (st.key === 'cards') {
       body.append(h('h2#lsn-title', 'راجع بالبطاقات'), h('p', 'اقلب البطاقة، ثم قيّم تذكّرك، فتعود إليك في الوقت المناسب.'), flashDeck(lessonCards(lesson), { lesson: id }));
     } else if (st.key === 'quiz') {
@@ -156,6 +163,48 @@ export async function render(root, params) {
     }
     window.scrollTo(0, 0);
     body.querySelector('h2')?.focus?.();
+  }
+
+  // المراجعة الموجهة: بطاقة لكل خطوة، بالترتيب، مع تقييم ذاتي وعودة إلى ما لم يُتذكّر
+  function guidedRecap() {
+    const items = lesson.steps.filter(s => s.recall);
+    const res = { ...(saved().recap || {}) };
+    let k = 0;
+    const dots = h('ol.rc-dots', { 'aria-hidden': 'true' }, items.map(() => h('li')));
+    const card = h('div.rc-card', { 'aria-live': 'polite' });
+    const stepIdx = (sid) => stages.findIndex(x => x.key === sid);
+    const draw = () => {
+      [...dots.children].forEach((d, j) => { d.className = j < k ? (res[items[j].id] ? 'is-ok' : 'is-miss') : j === k ? 'is-now' : ''; });
+      if (k >= items.length) return finish();
+      const s = items[k];
+      const ans = h('div.rc-ans', { hidden: true },
+        h('p.rc-a', h('span.rc-label', 'الجواب: '), s.recall.a),
+        s.key ? h('p.rc-key', h('span.rc-label', 'الفكرة في سطر: '), s.key) : null,
+        h('div.rc-rate',
+          h('button.btn.rc-ok', { type: 'button', onclick: () => rate(true) }, 'تذكّرتها'),
+          h('button.btn.rc-miss', { type: 'button', onclick: () => rate(false) }, 'لم أتذكّرها'),
+          h('button.cite-link', { type: 'button', onclick: () => show(stepIdx(s.id)) }, 'افتح الخطوة')));
+      const reveal = h('button.btn.btn--primary.rc-reveal', { type: 'button', onclick: () => { ans.hidden = false; reveal.hidden = true; } }, 'اكشف الجواب');
+      card.replaceChildren(h('p.rc-n', `${k + 1} من ${items.length} · ${s.title}`), h('p.rc-q', s.recall.q), h('p.rc-hint', 'حاول أن تجيب في ذهنك أولًا.'), reveal, ans);
+    };
+    const rate = (ok) => { res[items[k].id] = ok; setSaved({ recap: res }); k++; draw(); };
+    const finish = () => {
+      const miss = items.filter(s => !res[s.id]);
+      card.replaceChildren(
+        h('p.rc-q', `تذكّرت ${items.length - miss.length} من ${items.length}.`),
+        miss.length
+          ? h('div', h('p', 'راجع هذه الخطوات ثم أعد المراجعة:'), h('ul.rc-miss-list', miss.map(s => h('li', h('button.cite-link', { type: 'button', onclick: () => show(stepIdx(s.id)) }, s.title)))))
+          : h('p', 'ممتاز. أنت جاهز للبطاقات والاختبار.'),
+        h('button.btn', { type: 'button', onclick: () => { k = 0; draw(); } }, 'أعد المراجعة'));
+    };
+    draw();
+    return h('section.rc', h('h3', 'راجع الخطوات واحدة واحدة'), dots, card);
+  }
+
+  // خريطة الدرس: شجرة مفاهيم، كل عقدة تعيدك إلى خطوتها
+  function conceptMap(root) {
+    const node = (n) => h('li', h('button.cm-node', { type: 'button', onclick: () => show(stages.findIndex(x => x.key === n.step)) }, n.t), n.kids ? h('ul', n.kids.map(node)) : null);
+    return h('section.cm', h('h3', 'خريطة الدرس'), h('p.cm-hint', 'من الأكبر إلى الأصغر. اضغط على أي فكرة لتعود إلى خطوتها.'), h('ul.cm-tree', node(root)));
   }
 
   // فحص سريع داخل الخطوة: سؤال واحد بإجابة فورية

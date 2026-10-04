@@ -20,6 +20,7 @@ route('#/library', async () => import('./refs/library.js'));
 route('#/review', async () => import('./review.js'));
 route('#/pdf', async () => import('./refs/pdf-view.js'));
 route('#/e/:id', async () => import('./entities/page.js'));
+route('#/:wing/review/:level', async () => import('./level-review.js'));
 route('#/:wing/:level/:course/:lesson', async () => import('./lesson/lesson.js'));
 route('#/:wing', async () => import('./wing-home.js'));
 

@@ -6,7 +6,7 @@ export default {
   levels: [
     { n: 1, title: 'الخلية', courses: [
       { id: 'c1', title: 'من الذرة إلى الإنسان', lessons: [
-        { id: 'body.l1.c1.levels', title: 'مستويات التنظيم: من الذرة إلى الإنسان', minutes: 15, status: 'open' },
+        { id: 'body.l1.c1.levels', title: 'مستويات التنظيم: من الذرة إلى الإنسان', minutes: 25, status: 'open' },
         { id: 'body.l1.c1.membrane', title: 'غشاء الخلية والنقل عبره', status: 'soon' },
         { id: 'body.l1.c1.organelles', title: 'العضيّات ووظائفها', status: 'soon' },
         { id: 'body.l1.c1.dna-protein', title: 'من DNA إلى البروتين', status: 'soon' },
