@@ -33,10 +33,14 @@ async def interact(pg, key):
             await pg.locator('.rc-reveal').click(); await pg.locator('.rc-ok' if i % 3 else '.rc-miss').click()
         await pg.locator('.rc-miss-list').wait_for()
         assert await pg.locator('.cm-node').count() >= 8, 'concept map missing'
-    elif key == 'touch':
-        await v.locator('.pp-dot').dispatch_event('click')
-    elif key == 'story':
-        await v.locator('.cc-tabs button').nth(1).click()
+    elif key == 'pulse':
+        await v.locator('.pl .cite-link').click(); await v.locator('.pl-res').wait_for()
+        assert '72' in await v.locator('.pl-res').inner_text(), 'pulse calc wrong'
+        await v.locator('.pl-fx .fx-result').wait_for()
+    elif key == 'sickle':
+        await v.locator('.sk .cc-tabs button').nth(1).click()
+        for i in range(5): await v.locator('.sk-step').nth(i).click()
+        assert 'الإنسان' in await v.locator('.sk-cap').inner_text()
     if await pg.locator('.qc-opt').count():
         await pg.locator('.qc-opt').first.click()
 
@@ -50,11 +54,11 @@ async def answer(pg, t):
         for e in ['organ.lungs', 'organ.stomach', 'organ.kidneys']:
             await q.locator(f'.qz-chip[data-e="{e}"]').click(); await q.locator(f'path[data-e="{e}"]').first.dispatch_event('click')
     elif t == 'match':
-        for l, r in {'cell': 'خلية دم حمراء واحدة', 'tissue': 'النسيج الضام الكثيف المنتظم في الوتر', 'organ': 'المعدة', 'system': 'الجهاز الهضمي'}.items():
+        for l, r in {'cell': 'خلية دم حمراء واحدة', 'tissue': 'النسيج العضلي القلبي في جدار القلب', 'organ': 'المعدة', 'system': 'الجهاز الهضمي'}.items():
             await q.locator(f'.qz-m[data-side="l"][data-id="{l}"]').click(); await q.locator('.qz-m[data-side="r"]', has_text=r).click()
     elif t == 'tf-why':
         await q.locator('.qz-tf .qz-opt[data-id="false"]').click(); await q.locator('.qz-options .qz-opt[data-id="r2"]').click()
-    elif t == 'calc': await q.locator('input').fill('83')
+    elif t == 'calc': await q.locator('input').fill('72' if await q.get_attribute('data-qid') == 'q.levels.12' else '83')
 
 async def run(name, opts):
     errs = []
@@ -76,16 +80,17 @@ async def run(name, opts):
             if key == 'quiz': break
             await interact(pg, key); await pg.wait_for_timeout(350)
             await pg.screenshot(path=f'{OUT}/{name}-{i+1:02d}-{key}.png', full_page=True)
-            if key == 'touch':
+            if key == 'pulse':
                 await pg.locator('.refcard-go').click(); await pg.wait_for_selector('.entity-page')
                 await pg.click('.back-btn'); await pg.wait_for_selector('.lsn-step'); await pg.wait_for_timeout(300)
-                assert '?s=touch' in pg.url, 'back did not return to step: ' + pg.url
+                assert '?s=pulse' in pg.url, 'back did not return to step: ' + pg.url
             if key == 'ladder':
                 await pg.locator('.lsn-text .cite').first.click(); await pg.wait_for_selector('.ref-panel.is-open'); await pg.click('.rp-close')
             await pg.locator('.lsn-nav .btn--primary').click()
         await pg.locator('.ls-quiz .btn--primary').click()
         types = []
-        for i in range(11):
+        await pg.wait_for_selector('.qz-count'); n_q = int((await pg.locator('.qz-count').inner_text()).split()[-1])
+        for i in range(n_q):
             await pg.wait_for_selector('.qz-q'); await pg.wait_for_timeout(120)
             t = await pg.locator('.qz-q').get_attribute('data-type'); types.append(t)
             await answer(pg, t); await pg.wait_for_timeout(100)

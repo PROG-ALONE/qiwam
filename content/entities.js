@@ -19,6 +19,9 @@ const E = {
   'system.digestive': { owner: 'body', home: null, ar: 'الجهاز الهضمي', en: 'Digestive system', hook: 'رحلة اللقمة من الفم إلى الخلية.', refs: [] },
 
   // ——— التشريح ———
+  'cell.rbc':        { owner: 'body', home: null, ar: 'خلية الدم الحمراء', en: 'Erythrocyte', la: 'Erythrocytus', hook: 'قرص مرن يعيش نحو 120 يومًا.', refs: ['ref.openstax-ap2e:18.3'] },
+  'disease.sickle_cell': { owner: 'body', home: 'body.l1.c1.levels#sickle', ar: 'فقر الدم المنجلي', en: 'Sickle cell disease', hook: 'خلل في جزيء واحد يصعد السلّم حتى الإنسان كله.', refs: ['ref.openstax-ap2e:18.3'] },
+  'concept.pulse':   { owner: 'body', home: 'body.l1.c1.levels#pulse', ar: 'النبض', en: 'Pulse', hook: 'كيف تقيس قلبك بإصبعين؟', refs: ['ref.openstax-ap2e:20.2'] },
   'tendon.patellar': { owner: 'anatomy', home: null, ar: 'الوتر الرضفي', en: 'Patellar tendon', la: 'Ligamentum patellae', hook: 'لماذا يتأخر بالشفاء أكثر من العضلة نفسها؟', refs: ['ref.openstax-ap2e:4.3'] },
 };
 
